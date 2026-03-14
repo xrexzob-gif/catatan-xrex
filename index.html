@@ -14,6 +14,22 @@
             margin: 0;
             padding: 20px;
         }
+
+        /* OVERLAY MASUK BIAR MUSIK BISA JALAN */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; align-items: center;
+            justify-content: center; z-index: 9999; flex-direction: column;
+        }
+        #btnMasuk {
+            padding: 15px 40px; font-size: 18px; font-weight: bold;
+            background: linear-gradient(45deg, #ff0000, #ffeb3b, #4caf50, #2196f3, #9c27b0);
+            background-size: 200% auto;
+            color: white; border: none; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+            animation: rainbow_shift 3s linear infinite;
+        }
+
         .container { 
             background: rgba(17, 17, 17, 0.95); 
             border: 1px solid #444; 
@@ -61,6 +77,12 @@
     </style>
 </head>
 <body>
+
+    <div id="overlay">
+        <h2 class="rainbow-text">XREXZOB STORE</h2>
+        <p style="color: #666; margin-bottom: 20px;">Klik untuk masuk ke panel</p>
+        <button id="btnMasuk" onclick="mulaiWeb()">MASUK KE TOKO</button>
+    </div>
 
     <div class="container">
         <h2 class="rainbow-text">XREXZOB</h2>
@@ -141,7 +163,17 @@
         </div>
     </div>
 
+    <audio id="myAudio" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
+        function mulaiWeb() {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+            document.getElementById("overlay").style.display = "none";
+        }
+
         function kirimWA() {
             var layanan = document.getElementById("layanan").value;
             var target = document.getElementById("target").value;
