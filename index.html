@@ -5,122 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE RECORDS</title>
     <style>
+        /* Base Styles */
         body { 
             margin: 0; 
             background: #000; 
-            color: #888; 
+            color: #aaa; 
             font-family: 'Courier New', Courier, monospace; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh;
             line-height: 1.8;
-            overflow-x: hidden;
+            overflow-x: hidden; 
             position: relative;
         }
 
-        /* Tombol Musik di Pojok Kanan Atas */
-        .music-control {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid #1a1a1a;
-            color: #444;
-            padding: 10px 18px;
-            border-radius: 2px;
-            font-size: 10px;
-            cursor: pointer;
-            letter-spacing: 3px;
-            transition: 0.5s;
-            text-transform: uppercase;
-        }
-        .music-control:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: #444; }
-
+        /* Container Teks */
         .content {
-            width: 90%;
-            max-width: 700px;
-            padding: 60px 40px;
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 4px;
-            border-left: 1px solid #111;
-            border-right: 1px solid #111;
+            width: 85%;
+            max-width: 650px;
+            padding: 50px 40px;
+            background: rgba(0, 0, 0, 0.7); 
+            border-radius: 10px;
+            border: 1px solid #1a1a1a;
             position: relative;
-            z-index: 10;
-            margin: 50px 0;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            z-index: 10; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            margin: 40px 0;
         }
 
         h1 { 
             color: #fff; 
-            font-size: 1.1rem; 
-            letter-spacing: 15px; 
-            margin-bottom: 60px; 
-            text-transform: uppercase; 
+            font-size: 1.3rem; 
+            letter-spacing: 10px; 
+            margin-bottom: 40px;
+            text-transform: uppercase;
             text-align: center;
-            opacity: 0.6;
+            opacity: 0.9;
         }
 
-        .galau-text { 
-            font-size: 0.9rem; 
-            text-align: justify; 
-            animation: fadeInText 5s ease-in;
-            color: #999;
+        .galau-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            animation: fadeInText 3s ease-in;
         }
 
-        .highlight { 
-            color: #333; 
-            font-style: italic; 
-            display: block; 
-            margin-top: 40px; 
-            text-align: center;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
+        .highlight { color: #444; font-style: italic; display: block; margin-top: 30px; text-align: center; border-top: 1px solid #111; padding-top: 20px;}
 
         @keyframes fadeInText {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .status { 
-            margin-top: 60px; 
-            font-size: 0.6rem; 
-            color: #1a1a1a; 
-            letter-spacing: 5px; 
-            text-align: center;
+        .status {
+            margin-top: 50px;
+            font-size: 0.7rem;
+            color: #222;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            text-align: center;
         }
 
-        /* Bintang Jatuh */
-        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        .star { position: absolute; background-color: #fff; border-radius: 50%; opacity: 0; animation: fall linear infinite; }
-        
+        /* --- Efek Bintang Jatuh (Starfall) --- */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; 
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff; 
+            border-radius: 50%;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
         @keyframes fall {
             0% { transform: translateY(-10vh); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
             100% { transform: translateY(110vh); opacity: 0; }
         }
 
-        /* Overlay Effect */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, #000 150%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
             pointer-events: none;
-            z-index: 15;
+            z-index: 20;
+            opacity: 0.3;
         }
     </style>
 </head>
 <body>
 
     <div class="overlay"></div>
-    <div class="music-control" id="musicBtn">SYSTEM: MUTED</div>
     <div class="stars" id="starContainer"></div>
 
-    <audio id="player" loop>
+    <audio id="player" loop autoplay>
         <source src="musik3.mp3" type="audio/mpeg">
     </audio>
 
@@ -128,55 +112,48 @@
         <h1>THE RECORDS</h1>
         
         <div class="galau-text">
-            Mungkin aku sudah berada di titik terjauh dari diriku yang dulu. Titik di mana setiap helaan napas terasa seperti beban, dan setiap langkah kaki terasa seperti menyeret ribuan ton ekspektasi yang tak pernah aku minta. Aku terjebak dalam siklus yang membosankan: bangun hanya untuk bertahan hidup, bekerja hanya untuk membayar keberadaan yang melelahkan ini, lalu tidur dengan harapan bahwa besok pagi dunia akan sedikit lebih ramah. Tapi nyatanya, besok hanyalah pengulangan dari kehampaan yang sama. <br><br>
+            Rasanya aku sudah sampai di titik di mana kata-kata tidak lagi cukup untuk menjelaskan betapa lelahnya isi kepala ini. Bukan tentang satu atau dua masalah kecil, tapi tentang tumpukan ekspektasi dan realita yang terus-menerus menghantam tanpa jeda. Setiap hari terasa seperti pengulangan dari kehampaan yang sama—bangun, bertahan hidup, lalu tidur hanya untuk menghadapi esok yang tidak menjanjikan apa-apa. <br><br>
             
-            Aku lelah berpura-pura menjadi kuat di depan semua orang. Aku lelah memakai topeng "baik-baik saja" saat di dalam sini semuanya sedang hancur lebur tanpa sisa. Dunia ini terlalu bising, terlalu menuntut, dan terlalu cepat berlari, sementara aku tertatih di belakang, mencoba mengumpulkan sisa-sisa semangat yang makin hari makin memudar. Rasanya muak harus selalu fungsional, harus selalu produktif, dan harus selalu menjadi apa yang orang lain inginkan, tanpa pernah ada yang bertanya: "Apa kamu masih sanggup?" <br><br>
+            Aku lelah berjuang sendirian di tengah keramaian yang tidak pernah benar-benar peduli seberapa keras aku berusaha tetap waras. Dunia menuntutku untuk terus berfungsi, untuk terus kuat, dan untuk terus menjadi apa yang mereka inginkan. Namun, mereka lupa bahwa di balik topeng "baik-baik saja" ini, ada seseorang yang jiwanya sedang berteriak minta tolong karena sudah kehabisan napas. <br><br>
             
-            Semua pencapaian yang dulu aku kejar sekarang terasa hambar. Semua mimpi yang dulu aku rawat kini terasa seperti beban yang ingin aku lepaskan. Aku kehilangan minat pada hal-hal yang dulu aku cintai. Segalanya terasa abu-abu, datar, dan tak bernyawa. Bukan karena aku tidak bersyukur, tapi karena kapasitas mentalku sudah habis digunakan hanya untuk menjaga agar aku tidak jatuh sepenuhnya. Aku hanya ingin berhenti sejenak—benar-benar berhenti—tanpa dikejar rasa bersalah, tanpa dituntut tanggung jawab, dan tanpa harus memikirkan hari esok yang menakutkan. <br><br>
+            Ada rasa muak yang mendalam ketika harus berpura-pura bahwa semuanya terkendali. Langkah kakiku semakin berat, napasku semakin sesak, dan ambisiku mulai pudar ditelan rasa bosan terhadap keadaan yang tak kunjung berubah. Ternyata dewasa bukan soal kebebasan, tapi soal seberapa kuat kita menahan beban yang makin hari makin tidak masuk akal. <br><br>
             
-            Ada rasa sepi yang tidak bisa dijelaskan, bahkan saat aku berada di tengah keramaian. Sepi yang berasal dari perasaan tidak dimengerti oleh siapapun, termasuk oleh diriku sendiri. Aku hanya ingin menghilang ke tempat yang sunyi, tempat di mana tidak ada suara tuntutan, tidak ada tatapan penghakiman, dan tidak ada lagi beban yang harus dipikul. Menjadi nol, kembali ke titik awal, atau mungkin sekadar menjadi bagian dari hening yang paling panjang. Karena jujur saja, berjuang melawan dunia itu melelahkan, tapi berjuang melawan isi kepala sendiri itu jauh lebih mematikan.
+            Semuanya terasa abu-abu. Cita-cita, harapan, dan kebahagiaan seolah hanya menjadi dongeng lama yang sudah tidak relevan lagi dengan hidupku sekarang. Aku hanya ingin berhenti sejenak, tanpa harus merasa bersalah, tanpa harus merasa ketinggalan, dan tanpa harus memikirkan beban hari esok. Hanya ingin tenang, meskipun itu hanya dalam diam yang paling dalam, jauh dari bisingnya tuntutan dunia yang tak pernah puas. <br><br>
 
-            <span class="highlight">// Just a tired soul in a loud world. //</span>
+            Berjuang melawan dunia itu melelahkan, tapi berjuang melawan isi kepala sendiri itu jauh lebih mematikan. Aku hanya butuh jeda, sebelum semuanya benar-benar padam.
+
+            <span class="highlight">// Tired of fighting a war that has no end. //</span>
         </div>
 
-        <div class="status">PLAYING: MUSIK3.MP3 | LOG: 23-03-2026 | STATUS: COLLAPSED</div>
+        <div class="status">
+            SOURCE: MUSIK3.MP3 <br>
+            STATUS: EXHAUSTED <br>
+            [ TAP TO PLAY AUDIO ]
+        </div>
     </div>
 
     <script>
-        const audio = document.getElementById('player');
-        const btn = document.getElementById('musicBtn');
-
-        btn.addEventListener('click', function() {
-            if (audio.paused) {
-                audio.play();
-                btn.innerText = "SYSTEM: ACTIVE";
-                btn.style.color = "#fff";
-            } else {
-                audio.pause();
-                btn.innerText = "SYSTEM: MUTED";
-                btn.style.color = "#444";
-            }
-        });
-
         const container = document.getElementById('starContainer');
-        for (let i = 0; i < 150; i++) {
+        const starCount = 120; 
+
+        for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = (Math.random() * 1.5 + 0.5) + 'px';
-            star.style.width = size; star.style.height = size;
+            const size = Math.random() * 2 + 1 + 'px';
+            star.style.width = size;
+            star.style.height = size;
             star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDuration = (Math.random() * 10 + 5) + 's';
-            star.style.animationDelay = Math.random() * 15 + 's';
+            const duration = Math.random() * 10 + 5 + 's';
+            star.style.animationDuration = duration;
+            star.style.animationDelay = Math.random() * 10 + 's';
             container.appendChild(star);
         }
 
-        window.addEventListener('click', () => {
-            if(audio.paused && btn.innerText === "SYSTEM: MUTED") {
-                audio.play();
-                btn.innerText = "SYSTEM: ACTIVE";
-                btn.style.color = "#fff";
-            }
-        }, { once: true });
+        document.body.addEventListener('click', function() {
+            var audio = document.getElementById('player');
+            audio.play();
+        });
     </script>
+
 </body>
 </html>
