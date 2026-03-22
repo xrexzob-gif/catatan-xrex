@@ -1,199 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE RECORDS</title>
     <style>
+        /* Base Styles */
         body { 
-            background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
-            color: #fff; 
-            font-family: sans-serif; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0; 
+            background: #000; /* Background Hitam Pekat */
+            color: #aaa; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            line-height: 1.8;
+            overflow: hidden; /* Biar bintang gak bikin scrollbar */
+            position: relative;
         }
 
-        /* OVERLAY MASUK BIAR MUSIK BISA JALAN */
-        #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; align-items: center;
-            justify-content: center; z-index: 9999; flex-direction: column;
-        }
-        #btnMasuk {
-            padding: 15px 40px; font-size: 18px; font-weight: bold;
-            background: linear-gradient(45deg, #ff0000, #ffeb3b, #4caf50, #2196f3, #9c27b0);
-            background-size: 200% auto;
-            color: white; border: none; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 0 25px rgba(255,255,255,0.2);
-            animation: rainbow_shift 3s linear infinite;
+        /* Container Teks */
+        .content {
+            width: 85%;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.6); /* Transparan dikit biar bintang kelihatan di belakang */
+            border-radius: 10px;
+            border: 1px solid #1a1a1a;
+            position: relative;
+            z-index: 10; /* Di atas bintang */
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        .container { 
-            background: rgba(17, 17, 17, 0.95); 
-            border: 1px solid #444; 
-            border-radius: 20px; 
-            padding: 30px; 
-            max-width: 450px; 
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        h1 { 
+            color: #fff; 
+            font-size: 1.3rem; 
+            letter-spacing: 10px; 
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .galau-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            animation: fadeInText 3s ease-in;
+        }
+
+        .highlight { color: #555; font-style: italic; display: block; margin-top: 25px; text-align: center;}
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status {
+            margin-top: 50px;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             text-align: center;
         }
-        .rainbow-text { 
-            font-size: 32px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin: 0;
-            text-transform: uppercase;
-            background-image: linear-gradient(90deg, #ff0000, #ffeb3b, #4caf50, #2196f3, #9c27b0, #ff0000);
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text; 
-            color: transparent;
-            animation: rainbow_shift 3s linear infinite; 
+
+        /* --- Efek Bintang Jatuh (Starfall) --- */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; /* Di belakang teks */
         }
-        @keyframes rainbow_shift {
-            to { background-position: 200% center; }
+
+        .star {
+            position: absolute;
+            background-color: #fff; /* Warna Bintang Putih */
+            border-radius: 50%;
+            opacity: 0;
+            animation: fall linear infinite;
         }
-        .subtitle { font-size: 12px; color: #888; margin-bottom: 25px; letter-spacing: 1px; }
-        label { display: block; text-align: left; font-size: 11px; margin-bottom: 5px; color: #aaa; }
-        select, input { 
-            width: 100%; padding: 12px; margin-bottom: 20px; background: #222; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; outline: none;
+
+        /* Animasi Bintang Jatuh */
+        @keyframes fall {
+            0% { transform: translateY(-10vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh); opacity: 0; }
         }
-        .btn-order { 
-            background: linear-gradient(45deg, #ff0000, #ffeb3b, #4caf50, #2196f3, #9c27b0);
-            background-size: 200% auto;
-            color: #fff; width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-bottom: 15px; animation: rainbow_shift 5s linear infinite;
+
+        /* Efek garis halus (CRT) optional, matikan kalau ganggu */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0.3;
         }
-        .btn-raisya {
-            display: block; width: 100%; padding: 12px; background: #25d366; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; margin-bottom: 10px; box-sizing: border-box;
-        }
-        .btn-xrexzob {
-            display: block; width: 100%; padding: 12px; background: transparent; border: 2px solid #e1306c; color: #e1306c; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; box-sizing: border-box;
-        }
-        .footer { margin-top: 25px; font-size: 11px; color: #555; border-top: 1px solid #222; padding-top: 15px; }
-        optgroup { background: #111; color: #ffeb3b; }
     </style>
 </head>
 <body>
 
-    <div id="overlay">
-        <h2 class="rainbow-text">XREXZOB STORE</h2>
-        <p style="color: #666; margin-bottom: 20px;">Klik untuk masuk ke panel</p>
-        <button id="btnMasuk" onclick="mulaiWeb()">MASUK KE TOKO</button>
-    </div>
+    <div class="overlay"></div>
+    <div class="stars" id="starContainer"></div>
 
-    <div class="container">
-        <h2 class="rainbow-text">XREXZOB</h2>
-        <p class="subtitle">PREMIUM SMM PANEL SERVICES</p>
+    <audio id="player" loop autoplay>
+        <source src="musik3.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="content">
+        <h1>THE RECORDS</h1>
         
-        <label>PILIH LAYANAN SUNTIK:</label>
-        <select id="layanan">
-            <option value="">-- Klik untuk Pilih --</option>
+        <div class="galau-text">
+            Bukan tentang siapa yang datang atau pergi. Ini tentang diri sendiri yang dipaksa tetap berlari saat kaki sudah tak sanggup lagi menumpu beban. <br><br>
             
-            <optgroup label="INSTAGRAM (MIX INDO AKTIF)">
-                <option value="100 Followers IG : 5rb">100 Followers : 5rb</option>
-                <option value="200 Followers IG : 11rb">200 Followers : 11rb</option>
-                <option value="500 Followers IG : 25rb">500 Followers : 25rb</option>
-                <option value="1000 Followers IG : 32rb">1000 Followers : 32rb</option>
-                <option value="10.000 Followers IG : 250rb">10.000 Followers : 250rb</option>
-                <option value="50.000 Followers IG : 950rb">50.000 Followers : 950rb</option>
-            </optgroup>
+            Rasanya seperti terjebak dalam labirin yang ujungnya selalu sama: kehampaan. Capek mengejar standar yang tak pernah ada habisnya. Capek berpura-pura bahwa semuanya baik-baik saja, padahal di dalam sini, semuanya sudah hancur berantakan. <br><br>
+            
+            Dunia tidak pernah peduli seberapa lelahnya kamu. Ia tetap berputar, menuntutmu untuk terus ada, terus kuat, terus berfungsi. Tapi sampai kapan? <br><br>
+            
+            Kadang aku hanya ingin menghilang sejenak. Tanpa suara, tanpa beban, tanpa harus menjadi apa yang mereka inginkan. Menjadi diri sendiri yang sudah lama hilang ditelan tuntutan hidup.
+            
+            <span class="highlight">// Tired of fighting a war that has no end. //</span>
+        </div>
 
-            <optgroup label="TIKTOK">
-                <option value="100 Followers TikTok : 10rb">100 Followers : 10rb</option>
-                <option value="200 Followers TikTok : 15rb">200 Followers : 15rb</option>
-                <option value="500 Followers TikTok : 30rb">500 Followers : 30rb</option>
-                <option value="1000 Followers TikTok : 40rb">1000 Followers : 40rb</option>
-                <option value="5000 Followers TikTok : 160rb">5000 Followers : 160rb</option>
-                <option value="10.000 Followers TikTok : 290rb">10.000 Followers : 290rb</option>
-            </optgroup>
-
-            <optgroup label="FACEBOOK (LOLOS MONET)">
-                <option value="100 Followers FB : 8rb">100 Followers : 8rb</option>
-                <option value="200 Followers FB : 14rb">200 Followers : 14rb</option>
-                <option value="500 Followers FB : 30rb">500 Followers : 30rb</option>
-                <option value="1000 Followers FB : 45rb">1000 Followers : 45rb</option>
-                <option value="5000 Followers FB : 160rb">5000 Followers : 160rb</option>
-                <option value="10.000 Followers FB : 280rb">10.000 Followers : 280rb</option>
-            </optgroup>
-
-            <optgroup label="YOUTUBE (LOLOS MONET)">
-                <option value="100 Subs YT : 15rb">100 Sub : 15rb</option>
-                <option value="300 Subs YT : 35rb">300 Subs : 35rb</option>
-                <option value="500 Subs YT : 55rb">500 Subs : 55rb</option>
-                <option value="1000 Subs YT : 100rb">1000 Subs : 100rb</option>
-                <option value="5000 Subs YT : 350rb">5000 Subs : 350rb</option>
-                <option value="10.000 Subs YT : 650rb">10.000 Subs : 650rb</option>
-            </optgroup>
-
-            <optgroup label="LIKE (INSTAGRAM / TIKTOK)">
-                <option value="100 Likes : 3rb">100 Likes : 3rb</option>
-                <option value="200 Likes : 5rb">200 Likes : 5rb</option>
-                <option value="300 Likes : 8rb">300 Likes : 8rb</option>
-                <option value="500 Likes : 12rb">500 Likes : 12rb</option>
-                <option value="1000 Likes : 20rb">1000 Likes : 20rb</option>
-                <option value="10.000 Likes : 50rb">10.000 Likes : 50rb</option>
-                <option value="25.000 Likes : 100rb">25.000 Likes : 100rb</option>
-                <option value="50.000 Likes : 175rb">50.000 Likes : 175rb</option>
-            </optgroup>
-
-            <optgroup label="FYP TIKTOK">
-                <option value="FYP TIKTOK (100rb Views + 1k Likes) : 40rb">100rb Views + 1k Likes : 40rb</option>
-            </optgroup>
-        </select>
-
-        <label>TARGET ORDER (LINK/USERNAME):</label>
-        <input type="text" id="target" placeholder="Contoh: @xrexxzob">
-
-        <button class="btn-order" onclick="kirimWA()">BELI SEKARANG</button>
-        
-        <a href="https://wa.me/6285710310827?text=Halo%20Raisya%2C%20saya%20butuh%20bantuan%20di%20XREXZOB%20STORE" class="btn-raisya" target="_blank">
-            PUSAT BANTUAN (RAISYA)
-        </a>
-
-        <a href="https://www.instagram.com/xrexzob?igsh=cTV1ODZxcHM5dGVl" class="btn-xrexzob" target="_blank">
-            CUSTOMER SERVICE (XREXZOB)
-        </a>
-
-        <div class="footer">
-            📸 IG : xrexxzob | 📘 FB : Arif kentang<br>
-            Official XREXZOB STORE
+        <div class="status">
+            SOURCE: MUSIK3.MP3 <br>
+            STATUS: EXHAUSTED <br>
+            [ TAP TO PLAY AUDIO ]
         </div>
     </div>
 
-    <audio id="myAudio" loop>
-        <source src="musik.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        function mulaiWeb() {
-            var audio = document.getElementById("myAudio");
+        // --- JavaScript buat bikin bintang jatuh otomatis ---
+        const container = document.getElementById('starContainer');
+        const starCount = 100; // Jumlah bintang
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            // Ukuran acak (1px - 3px)
+            const size = Math.random() * 2 + 1 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            
+            // Posisi horizontal acak (0% - 100%)
+            star.style.left = Math.random() * 100 + 'vw';
+            
+            // Durasi jatuh acak (5s - 15s)
+            const duration = Math.random() * 10 + 5 + 's';
+            star.style.animationDuration = duration;
+            
+            // Delay acak biar gak barengan jatuhnya
+            star.style.animationDelay = Math.random() * 10 + 's';
+
+            container.appendChild(star);
+        }
+
+        // --- Paksa suara jalan kalau diklik ---
+        document.body.addEventListener('click', function() {
+            var audio = document.getElementById('player');
             audio.play();
-            document.getElementById("overlay").style.display = "none";
-        }
-
-        function kirimWA() {
-            var layanan = document.getElementById("layanan").value;
-            var target = document.getElementById("target").value;
-            var nomorWA = "6283135445588";
-
-            if(layanan == "" || target == "") {
-                alert("Isi pilihan dan target dulu!");
-                return;
-            }
-
-            var pesan = "*ORDERAN BARU - XREXZOB STORE*\n" +
-                        "=============================\n" +
-                        "*Layanan :* " + layanan + "\n" +
-                        "*Target   :* " + target + "\n" +
-                        "=============================\n" +
-                        "Tolong segera diproses ya Min!";
-
-            var linkWA = "https://wa.me/" + nomorWA + "?text=" + encodeURIComponent(pesan);
-            window.location.href = linkWA;
-        }
+        });
     </script>
 
 </body>
