@@ -3,157 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE RECORDS</title>
+    <title>Our Private Space</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
-        /* Base Styles */
-        body { 
-            margin: 0; 
-            background: #000; 
-            color: #aaa; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0d0d; /* Tema Gelap */
+            color: #ffffff;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            line-height: 1.8;
-            overflow-x: hidden; 
-            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Container Teks */
-        .content {
-            width: 85%;
-            max-width: 650px;
-            padding: 50px 40px;
-            background: rgba(0, 0, 0, 0.7); 
-            border-radius: 10px;
-            border: 1px solid #1a1a1a;
-            position: relative;
-            z-index: 10; 
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
-            margin: 40px 0;
-        }
-
-        h1 { 
-            color: #fff; 
-            font-size: 1.3rem; 
-            letter-spacing: 10px; 
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            text-align: center;
-            opacity: 0.9;
-        }
-
-        .galau-text {
-            font-size: 0.95rem;
-            text-align: justify;
-            animation: fadeInText 3s ease-in;
-        }
-
-        .highlight { color: #444; font-style: italic; display: block; margin-top: 30px; text-align: center; border-top: 1px solid #111; padding-top: 20px;}
-
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .status {
-            margin-top: 50px;
-            font-size: 0.7rem;
-            color: #222;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        /* --- Efek Bintang Jatuh (Starfall) --- */
+        /* Efek Bintang Jatuh Sederhana */
         .stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; 
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
         }
 
-        .star {
-            position: absolute;
-            background-color: #fff; 
-            border-radius: 50%;
-            opacity: 0;
-            animation: fall linear infinite;
+        header {
+            text-align: center;
+            margin-top: 50px;
         }
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(110vh); opacity: 0; }
+        h1 { font-weight: 500; letter-spacing: 2px; }
+        p { font-weight: 300; color: #aaa; }
+
+        .video-container {
+            width: 80%;
+            max-width: 800px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 20;
-            opacity: 0.3;
+        video {
+            width: 100%;
+            display: block;
+            background: #000;
+        }
+
+        .controls {
+            margin-bottom: 50px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .btn-share { background: #e91e63; color: white; }
+        .btn-join { background: #2196f3; color: white; }
+        .btn-share:hover, .btn-join:hover { opacity: 0.8; transform: scale(1.05); }
+
+        .peer-id-box {
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div>
-    <div class="stars" id="starContainer"></div>
+    <div class="stars"></div>
 
-    <audio id="player" loop autoplay>
-        <source src="musik3.mp3" type="audio/mpeg">
-    </audio>
+    <header>
+        <h1>Our World</h1>
+        <p>Watching together, even miles apart.</p>
+    </header>
 
-    <div class="content">
-        <h1>THE RECORDS</h1>
+    <div class="video-container">
+        <video id="remote-video" autoplay playsinline></video>
+        <video id="local-video" autoplay muted playsinline style="display:none;"></video>
+    </div>
+
+    <div class="peer-id-box">
+        ID Kamu: <span id="my-id">Menghubungkan...</span>
+    </div>
+
+    <div class="controls">
+        <button class="btn-share" onclick="startScreenShare()">Mulai Share Screen</button>
         
-        <div class="galau-text">
-            Rasanya aku sudah sampai di titik di mana kata-kata tidak lagi cukup untuk menjelaskan betapa lelahnya isi kepala ini. Bukan tentang satu atau dua masalah kecil, tapi tentang tumpukan ekspektasi dan realita yang terus-menerus menghantam tanpa jeda. Setiap hari terasa seperti pengulangan dari kehampaan yang sama—bangun, bertahan hidup, lalu tidur hanya untuk menghadapi esok yang tidak menjanjikan apa-apa. <br><br>
-            
-            Aku lelah berjuang sendirian di tengah keramaian yang tidak pernah benar-benar peduli seberapa keras aku berusaha tetap waras. Dunia menuntutku untuk terus berfungsi, untuk terus kuat, dan untuk terus menjadi apa yang mereka inginkan. Namun, mereka lupa bahwa di balik topeng "baik-baik saja" ini, ada seseorang yang jiwanya sedang berteriak minta tolong karena sudah kehabisan napas. <br><br>
-            
-            Ada rasa muak yang mendalam ketika harus berpura-pura bahwa semuanya terkendali. Langkah kakiku semakin berat, napasku semakin sesak, dan ambisiku mulai pudar ditelan rasa bosan terhadap keadaan yang tak kunjung berubah. Ternyata dewasa bukan soal kebebasan, tapi soal seberapa kuat kita menahan beban yang makin hari makin tidak masuk akal. <br><br>
-            
-            Semuanya terasa abu-abu. Cita-cita, harapan, dan kebahagiaan seolah hanya menjadi dongeng lama yang sudah tidak relevan lagi dengan hidupku sekarang. Aku hanya ingin berhenti sejenak, tanpa harus merasa bersalah, tanpa harus merasa ketinggalan, dan tanpa harus memikirkan beban hari esok. Hanya ingin tenang, meskipun itu hanya dalam diam yang paling dalam, jauh dari bisingnya tuntutan dunia yang tak pernah puas. <br><br>
-
-            Berjuang melawan dunia itu melelahkan, tapi berjuang melawan isi kepala sendiri itu jauh lebih mematikan. Aku hanya butuh jeda, sebelum semuanya benar-benar padam.
-
-            <span class="highlight">// Tired of fighting a war that has no end. //</span>
-        </div>
-
-        <div class="status">
-            SOURCE: MUSIK3.MP3 <br>
-            STATUS: EXHAUSTED <br>
-            [ TAP TO PLAY AUDIO ]
-        </div>
+        <input type="text" id="target-id" placeholder="Masukkan ID Pasangan" style="padding: 10px; border-radius: 20px; border:none;">
+        <button class="btn-join" onclick="connectToPeer()">Tonton Sekarang</button>
     </div>
 
     <script>
-        const container = document.getElementById('starContainer');
-        const starCount = 120; 
+        const peer = new Peer(); // Membuat ID unik otomatis
+        let myStream;
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2 + 1 + 'px';
-            star.style.width = size;
-            star.style.height = size;
-            star.style.left = Math.random() * 100 + 'vw';
-            const duration = Math.random() * 10 + 5 + 's';
-            star.style.animationDuration = duration;
-            star.style.animationDelay = Math.random() * 10 + 's';
-            container.appendChild(star);
+        // Menampilkan ID kamu di layar
+        peer.on('open', (id) => {
+            document.getElementById('my-id').innerText = id;
+        });
+
+        // Logika saat ada panggilan masuk (Pacar kamu klik "Tonton")
+        peer.on('call', (call) => {
+            call.answer(); // Menjawab panggilan
+            call.on('stream', (remoteStream) => {
+                document.getElementById('remote-video').srcObject = remoteStream;
+            });
+        });
+
+        // Fungsi buat kamu (Pengirim Layar)
+        async function startScreenShare() {
+            try {
+                myStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { cursor: "always" },
+                    audio: true
+                });
+                document.getElementById('remote-video').srcObject = myStream;
+                alert("Screen share aktif! Kasih ID kamu ke doi ya.");
+            } catch (err) {
+                console.error("Gagal share screen: " + err);
+            }
         }
 
-        document.body.addEventListener('click', function() {
-            var audio = document.getElementById('player');
-            audio.play();
-        });
+        // Fungsi buat pasangan (Penerima Layar)
+        function connectToPeer() {
+            const targetId = document.getElementById('target-id').value;
+            if (!targetId) {
+                alert("Masukkan ID dulu dong!");
+                return;
+            }
+            
+            // Pasangan memanggil kamu (tapi kamu yang kirim stream-nya nanti)
+            // Note: Untuk P2P sederhana, ini butuh kamu sudah "Start Share" dulu
+            const call = peer.call(targetId, myStream);
+            call.on('stream', (remoteStream) => {
+                document.getElementById('remote-video').srcObject = remoteStream;
+            });
+        }
     </script>
-
 </body>
 </html>
