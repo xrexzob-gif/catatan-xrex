@@ -2,112 +2,88 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Live Stream - Our Space</title>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚠️ SYSTEM_CRITICAL_ERROR</title>
     <style>
-        body {
-            margin: 0; padding: 0;
-            background: #0b0e14;
-            color: #fff;
-            font-family: sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; min-height: 100vh;
-        }
-        .container { width: 90%; max-width: 700px; text-align: center; }
-        .video-box { 
-            width: 100%; aspect-ratio: 16/9; 
-            background: #000; border-radius: 15px; 
-            border: 2px solid #e91e63; margin-bottom: 20px;
-            overflow: hidden;
-        }
-        video { width: 100%; height: 100%; object-fit: contain; }
-        .controls { display: flex; flex-direction: column; gap: 10px; }
-        .row { display: flex; gap: 10px; justify-content: center; }
-        input { 
-            padding: 12px; border-radius: 8px; border: none; 
-            background: #1e2530; color: #fff; flex: 1;
-        }
-        button { 
-            padding: 12px 20px; border-radius: 8px; border: none; 
-            cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
-        .btn-main { background: #e91e63; color: white; }
-        .btn-sub { background: #2196f3; color: white; }
-        button:active { transform: scale(0.95); }
-        #my-id-display { color: #ffeb3b; font-weight: bold; cursor: pointer; }
+        body { background: #000; color: #ff0000; font-family: 'Courier New', monospace; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; text-align: center; -webkit-user-select: none; user-select: none; }
+        #lock-screen { width: 90%; max-width: 400px; padding: 30px; border: 3px solid #ff0000; background: #0a0000; box-shadow: 0 0 50px #ff0000; z-index: 9999; }
+        .blink { animation: blinker 0.15s infinite; color: yellow; font-weight: bold; font-size: 1.2rem; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        input { width: 90%; padding: 15px; background: #111; border: 2px solid #ff0000; color: #ff0000; text-align: center; font-size: 1.5rem; margin: 20px 0; outline: none; caret-color: white; }
+        button { background: #ff0000; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem; text-transform: uppercase; }
+        .timer { color: #fff; font-size: 0.8rem; margin-top: 15px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onkeydown="return false;" onmousedown="return false;" onclick="mintaFull()">
 
-<div class="container">
-    <h1 style="color: #e91e63;">Our Secret Live ❤️</h1>
-    <p>ID Kamu: <span id="my-id-display" onclick="copyMyId()">Sedang memuat ID...</span></p>
-
-    <div class="video-box">
-        <video id="remote-video" autoplay playsinline></video>
-    </div>
-
-    <div class="controls">
-        <button class="btn-main" id="btn-start" onclick="startStream()">1. Mulai Share Screen</button>
+    <div id="lock-screen">
+        <div class="blink">⚠️ SYSTEM ENCRYPTED ⚠️</div>
+        <p style="font-size: 0.9rem; margin: 15px 0;">Seluruh data di perangkat ini telah dikunci oleh <b>XREX_PROTOCOL</b>. Mematikan perangkat akan menghapus semua foto & chat secara permanen.</p>
         
-        <div class="row">
-            <input type="text" id="target-id" placeholder="Masukkan ID Pasangan">
-            <button class="btn-sub" onclick="connectToPartner()">2. Tonton Live</button>
-        </div>
+        <input type="text" id="passInput" placeholder="MASUKKAN KODE XREX" autocomplete="off">
+        <br>
+        <button onclick="cekSandi()">DECRYPT DATA NOW</button>
+        
+        <div class="timer">AUTO-DELETE IN: <span id="clock" style="color:red">04:59</span></div>
     </div>
-    <p style="font-size: 12px; color: #666; margin-top: 20px;">*Klik ID kamu untuk menyalin</p>
-</div>
 
-<script>
-    const peer = new Peer();
-    let localStream;
+    <script>
+        // 1. KODE RAHASIA
+        const target = "xrex";
 
-    // Dapetin ID unik otomatis
-    peer.on('open', (id) => {
-        document.getElementById('my-id-display').innerText = id;
-    });
-
-    // Nerima panggilan dari pacar
-    peer.on('call', (call) => {
-        call.answer(); 
-        call.on('stream', (remoteStream) => {
-            document.getElementById('remote-video').srcObject = remoteStream;
-        });
-    });
-
-    // Fungsi Mulai Share Screen
-    async function startStream() {
-        try {
-            localStream = await navigator.mediaDevices.getDisplayMedia({
-                video: true,
-                audio: true
-            });
-            document.getElementById('remote-video').srcObject = localStream;
-            alert("Share screen aktif! Sekarang kasih ID lu ke dia.");
-        } catch (err) {
-            alert("Gagal: Pastikan web pakai HTTPS atau coba di Chrome/Edge.");
+        // 2. CEK SANDI
+        function cekSandi() {
+            const val = document.getElementById('passInput').value.toLowerCase();
+            if (val === target) {
+                alert("DECRYPTION SUCCESS! Perangkat kembali normal.");
+                document.body.innerHTML = `
+                    <div style="background:#000; color:#00ff00; padding:40px; border:5px solid #00ff00;">
+                        <h1>WKWK KENA PRANK!</h1>
+                        <p style="font-size:1.5rem">HP Kamu Aman Kok, Arifin Cuma Jahil Hehe. <br><br> Sayang Kamu! ❤️</p>
+                        <button onclick="location.reload()" style="background:#00ff00; color:#000; padding:10px;">SELESAI</button>
+                    </div>
+                `;
+                if (document.exitFullscreen) document.exitFullscreen();
+            } else {
+                alert("ACCESS DENIED! Jangan coba-coba keluar atau data hilang.");
+                document.getElementById('passInput').value = "";
+            }
         }
-    }
 
-    // Fungsi Connect ke Pasangan
-    function connectToPartner() {
-        const targetId = document.getElementById('target-id').value;
-        if (!targetId) return alert("Isi ID pasangan dulu!");
+        // 3. PAKSA FULLSCREEN (Menghilangkan Navigasi HP)
+        function mintaFull() {
+            let e = document.documentElement;
+            if (e.requestFullscreen) e.requestFullscreen();
+            else if (e.webkitRequestFullscreen) e.webkitRequestFullscreen();
+        }
 
-        // Kita panggil dia dan kirim stream kita (biar dia bisa liat)
-        const call = peer.call(targetId, localStream);
-        call.on('stream', (remoteStream) => {
-            document.getElementById('remote-video').srcObject = remoteStream;
-        });
-    }
+        // 4. LOCK TOMBOL BACK (Sangat Mengunci)
+        (function() {
+            history.pushState(null, null, document.URL);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, document.URL);
+                alert("PERINGATAN: Sistem sedang terkunci! Masukkan sandi XREX!");
+            });
+        })();
 
-    function copyMyId() {
-        const idText = document.getElementById('my-id-display').innerText;
-        navigator.clipboard.writeText(idText);
-        alert("ID Berhasil di-copy: " + idText);
-    }
-</script>
+        // 5. LOCK REFRESH & TUTUP TAB (Hanya bisa di beberapa browser)
+        window.onbeforeunload = function() {
+            return "Data sedang dienkripsi! Jangan keluar!";
+        };
 
+        // 6. TIMER PALSU BIAR PANIK
+        let min = 4, sec = 59;
+        setInterval(() => {
+            sec--;
+            if (sec < 0) { min--; sec = 59; }
+            document.getElementById('clock').innerText = `0${min}:${sec < 10 ? '0'+sec : sec}`;
+        }, 1000);
+
+        // Pastikan keyboard muncul saat diklik
+        document.getElementById('passInput').onclick = (e) => {
+            e.stopPropagation();
+            e.target.focus();
+        };
+    </script>
 </body>
 </html>
