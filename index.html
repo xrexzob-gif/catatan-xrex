@@ -3,76 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SYSTEM_HALTED_0x00019</title>
+    <title>⚠️ SYSTEM_HALTED_0x00019</title>
     <style>
-        body { background: #000; color: #ff0000; font-family: 'Courier New', monospace; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; text-align: center; }
-        #lock-box { width: 85%; max-width: 400px; padding: 25px; border: 2px solid #ff0000; background: #0a0000; box-shadow: 0 0 40px #ff0000; z-index: 999; }
-        .alert { animation: blink 0.3s infinite; color: #fff; background: red; font-weight: bold; padding: 5px; margin-bottom: 15px; }
+        /* Paksa Hitam Pekat */
+        body, html { 
+            background: #000; color: #ff0000; font-family: 'Courier New', monospace; 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; cursor: none;
+        }
+        #lock-box { 
+            width: 85%; max-width: 400px; padding: 25px; 
+            border: 2px solid #ff0000; background: #0a0000; 
+            box-shadow: 0 0 50px #ff0000; z-index: 9999;
+            position: relative;
+        }
+        .alert { animation: blink 0.3s infinite; color: #000; background: red; font-weight: bold; padding: 5px; margin-bottom: 15px; }
         @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0;} 100% {opacity: 1;} }
-        input { width: 90%; padding: 15px; background: #111; border: 1px solid #ff0000; color: #ff0000; text-align: center; font-size: 1.5rem; margin: 20px 0; outline: none; border-radius: 5px; }
+        input { 
+            width: 90%; padding: 15px; background: #111; border: 1px solid #ff0000; 
+            color: #ff0000; text-align: center; font-size: 1.5rem; margin: 20px 0; 
+            outline: none; border-radius: 5px;
+        }
         button { background: #ff0000; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem; border-radius: 5px; }
-        .desc { font-size: 0.8rem; color: #ccc; line-height: 1.4; }
     </style>
 </head>
-<body onclick="setupPrank()">
+<body id="main-body">
 
     <div id="lock-box">
         <div class="alert">⚠️ THREAT DETECTED ⚠️</div>
-        <p class="desc">Perangkat Anda telah dienkripsi oleh <b>XREX-V2</b>. Jangan menutup halaman ini atau data Anda akan terhapus secara permanen.</p>
+        <p style="font-size: 0.8rem;">Perangkat Anda telah dienkripsi oleh <b>XREX-V2</b>. Segera masukkan kode dekripsi.</p>
         
         <input type="text" id="userInput" placeholder="KODE AKSES" autocomplete="off">
         <br>
         <button onclick="prosesDekripsi()">BATALKAN ENKRIPSI</button>
-        
         <p style="font-size: 0.6rem; color: #444; margin-top: 20px;">ENCRYPTION_KEY: XREX_777_SECURE</p>
     </div>
 
     <script>
         const KEY_BENAR = "xrex";
 
-        function setupPrank() {
-            // Paksa Fullscreen biar navigasi HP ilang
+        // Fungsi biar pas diklik langsung Full Screen (Ngelimit navigasi Chrome)
+        function forceFull() {
             let doc = document.documentElement;
             if (doc.requestFullscreen) doc.requestFullscreen();
             else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
-
-            // Kunci navigasi Back
-            history.pushState(null, null, location.href);
-            window.onpopstate = function () {
-                history.go(1);
-                alert("SISTEM TERKUNCI! Masukkan kode XREX untuk kembali.");
-            };
+            else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
         }
+
+        // Jalankan lock history pas web dibuka
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+            alert("SISTEM TERKUNCI! MASUKKAN KODE XREX!");
+        };
+
+        // Pas dia klik layar buat ngetik, jebak ke Full Screen
+        document.body.addEventListener('click', function() {
+            forceFull();
+        });
 
         function prosesDekripsi() {
             const input = document.getElementById('userInput').value.toLowerCase();
-            
             if (input === KEY_BENAR) {
-                alert("DEKRIPSI BERHASIL! Perangkat kembali normal.");
-                
-                // --- BAGIAN INI UNTUK NORMALIN LAGI ---
-                document.body.innerHTML = `
-                    <div style="color:#00ff00; text-align:center; padding:20px;">
-                        <h1 style="font-size:3rem;">WKWK!</h1>
-                        <p style="font-size:1.2rem; color:#fff;">Cuma Prank, Sayang! <br> Gak usah panik, HP kamu aman kok. <br><br> ❤️ Dari Arifin ❤️</p>
-                        <button onclick="window.close()" style="background:#00ff00; color:#000; border:none; padding:10px 20px; font-weight:bold; cursor:pointer;">KELUAR</button>
-                    </div>
-                `;
-                
-                // Keluar dari Fullscreen otomatis
+                alert("DEKRIPSI BERHASIL!");
+                document.body.innerHTML = "<h1 style='color:#00ff00; padding:20px; text-align:center;'>WKWK KENA PRANK!<br>SAYANG ARIFIN GAK? ❤️</h1>";
+                // Matiin Full Screen
                 if (document.exitFullscreen) document.exitFullscreen();
                 else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-
             } else {
-                alert("KODE SALAH! Menghapus file sistem dalam 10 detik...");
+                alert("ACCESS DENIED!");
                 document.getElementById('userInput').value = "";
             }
         }
-
-        // Anti-tutup Tab
-        window.onbeforeunload = function() {
-            return "Sistem terkunci! Anda akan kehilangan data!";
-        };
     </script>
 </body>
 </html>
