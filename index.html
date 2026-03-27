@@ -2,142 +2,223 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ujian Kesetiaan Arifin v6.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE RECORDS</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: #fafafa; color: #333; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        #quiz-container { background: #fff; width: 92%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        .header { text-align: center; border-bottom: 2px solid #ff4d6d; margin-bottom: 20px; padding-bottom: 10px; }
-        .q-num { font-size: 0.8rem; color: #888; margin-bottom: 5px; }
-        .q-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #222; line-height: 1.4; }
-        .option { display: block; background: #f8f9fa; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .option:hover { background: #fff0f3; border-color: #ff4d6d; }
-        .option.selected { background: #ff4d6d; color: white; border-color: #ff4d6d; }
-        #btn-next { background: #ff4d6d; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 10px; }
-        
-        /* Layar Hasil Evaluasi */
-        #result-screen { display: none; text-align: center; }
-        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 8px solid #ff4d6d; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; margin: 20px auto; color: #ff4d6d; }
-        .review-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
-        .review-box { padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; color: white; }
-        .bg-green { background: #28a745; }
-        .bg-red { background: #dc3545; }
-        .final-msg { font-size: 1rem; line-height: 1.5; color: #555; margin-bottom: 25px; }
+        /* Base Styles */
+        body { 
+            margin: 0; 
+            background: #000; 
+            color: #aaa; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            line-height: 1.8;
+            overflow-x: hidden; 
+            position: relative;
+        }
+
+        /* --- SISTEM KUNCI AKSES (OVERLAY) --- */
+        #access-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: 1s ease-in-out;
+        }
+
+        #access-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #333;
+            color: #fff;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            outline: none;
+            padding: 10px;
+            width: 250px;
+            text-transform: uppercase;
+        }
+
+        #access-label {
+            font-size: 0.7rem;
+            color: #444;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* Container Teks */
+        .content {
+            width: 85%;
+            max-width: 650px;
+            padding: 50px 40px;
+            background: rgba(0, 0, 0, 0.7); 
+            border-radius: 10px;
+            border: 1px solid #1a1a1a;
+            position: relative;
+            z-index: 10; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            margin: 40px 0;
+            display: none; /* Muncul setelah key benar */
+        }
+
+        h1 { 
+            color: #fff; 
+            font-size: 1.3rem; 
+            letter-spacing: 10px; 
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .galau-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            animation: fadeInText 3s ease-in;
+        }
+
+        .highlight { color: #444; font-style: italic; display: block; margin-top: 30px; text-align: center; border-top: 1px solid #111; padding-top: 20px;}
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; opacity: 1; transform: translateY(0); }
+        }
+
+        .status {
+            margin-top: 50px;
+            font-size: 0.7rem;
+            color: #222;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* --- Efek Bintang Jatuh (Starfall) --- */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; 
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff; 
+            border-radius: 50%;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(110vh); opacity: 0; }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body>
 
-    <div id="quiz-container">
-        <div id="quiz-content">
-            <div class="header">
-                <h2 style="margin:0; color: #ff4d6d;">LOYALTY TEST</h2>
-                <p style="font-size: 0.7rem; color: #888;">Arifin's Official Relationship Exam</p>
-            </div>
-            <div id="q-number" class="q-num">Pertanyaan 1/20</div>
-            <div id="question-box"></div>
-            <button id="btn-next" onclick="nextQuestion()">LANJUT →</button>
+    <div id="access-overlay">
+        <div id="access-label">INSERT ACCESS KEY</div>
+        <input type="text" id="access-input" placeholder="••••••" maxlength="6" autocomplete="off">
+    </div>
+
+    <div class="overlay"></div>
+    <div class="stars" id="starContainer"></div>
+
+    <audio id="player" loop>
+        <source src="musik3.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="content" id="mainContent">
+        <h1>THE RECORDS</h1>
+        
+        <div class="galau-text">
+            Rasanya aku sudah sampai di titik di mana kata-kata tidak lagi cukup untuk menjelaskan betapa lelahnya isi kepala ini. Bukan tentang satu atau dua masalah kecil, tapi tentang tumpukan ekspektasi dan realita yang terus-menerus menghantam tanpa jeda. Setiap hari terasa seperti pengulangan dari kehampaan yang sama—bangun, bertahan hidup, lalu tidur hanya untuk menghadapi esok yang tidak menjanjikan apa-apa. <br><br>
+            
+            Aku lelah berjuang sendirian di tengah keramaian yang tidak pernah benar-benar peduli seberapa keras aku berusaha tetap waras. Dunia menuntutku untuk terus berfungsi, untuk terus kuat, dan untuk terus menjadi apa yang mereka inginkan. Namun, mereka lupa bahwa di balik topeng "baik-baik saja" ini, ada seseorang yang jiwanya sedang berteriak minta tolong karena sudah kehabisan napas. <br><br>
+
+            Kadang aku bertanya pada malam, apakah memang begini harganya menjadi dewasa? Membungkam emosi hingga menjadi bom waktu, dan tersenyum ketika hati sedang hancur lebur. Tak ada tempat untuk sekadar bersandar, karena semua orang sibuk dengan bebannya masing-masing. Aku merasa seperti orang asing di tubuhku sendiri, berjalan tanpa arah di bawah langit yang tak lagi berbintang. <br><br>
+            
+            Ada rasa muak yang mendalam ketika harus berpura-pura bahwa semuanya terkendali. Langkah kakiku semakin berat, napasku semakin sesak, dan ambisiku mulai pudar ditelan rasa bosan terhadap keadaan yang tak kunjung berubah. Ternyata dewasa bukan soal kebebasan, tapi soal seberapa kuat kita menahan beban yang makin hari makin tidak masuk akal. <br><br>
+
+            Langit mungkin terlihat tenang, tapi badai di dalam dadaku tak pernah benar-benar surut. Aku rindu masa di mana satu-satunya kekhawatiranku hanyalah soal hari esok yang indah, bukan soal hari esok yang penuh dengan ketakutan akan kegagalan. Kini, setiap detak jantung terasa seperti peringatan bahwa waktu terus berjalan, sementara aku masih terjebak di ruang gelap yang sama. <br><br>
+            
+            Semuanya terasa abu-abu. Cita-cita, harapan, dan kebahagiaan seolah hanya menjadi dongeng lama yang sudah tidak relevan lagi dengan hidupku sekarang. Aku hanya ingin berhenti sejenak, tanpa harus merasa bersalah, tanpa harus merasa ketinggalan, dan tanpa harus memikirkan beban hari esok. Hanya ingin tenang, meskipun itu hanya dalam diam yang paling dalam, jauh dari bisingnya tuntutan dunia yang tak pernah puas. <br><br>
+
+            Berjuang melawan dunia itu melelahkan, tapi berjuang melawan isi kepala sendiri itu jauh lebih mematikan. Aku hanya butuh jeda, sebelum semuanya benar-benar padam. Biarkan aku beristirahat dalam sunyi ini, di mana tak ada yang menghakimiku, dan tak ada yang menuntutku untuk menjadi apa pun. <br><br>
+
+            Sebab pada akhirnya, aku hanya manusia biasa yang lelah berpura-pura menjadi pahlawan bagi hidupku sendiri.
+
+            <span class="highlight">// Tired of fighting a war that has no end. //</span>
         </div>
 
-        <div id="result-screen">
-            <div class="header"><h2 style="margin:0;">HASIL UJIAN</h2></div>
-            <div class="score-circle" id="final-score">0%</div>
-            
-            <p style="font-size: 0.9rem; font-weight: bold;">Rincian Jawaban (1-20):</p>
-            <div id="review-list" class="review-grid"></div>
-            
-            <p class="final-msg" id="result-msg"></p>
-            
-            <button onclick="location.reload()" style="background:#333; color:white; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">ULANGI UJIAN</button>
+        <div class="status">
+            SOURCE: MUSIK3.MP3 <br>
+            STATUS: ACTIVE <br>
+            // RAIYSA AUTHORIZED //
         </div>
     </div>
 
     <script>
-        const questions = [
-            { q: "Siapa orang paling ganteng di hidup kamu?", a: ["Arifin", "Idol K-Pop", "Mantan"], c: 0 },
-            { q: "Kalau ada cowok lebih ganteng, respon kamu?", a: ["Liatin terus", "Arifin tetep nomor 1", "Minta kenalan"], c: 1 },
-            { q: "Arifin tiba-bitu ngilang seharian, kamu?", a: ["Marah", "Sabar & tungguin", "Cari cowok lain"], c: 1 },
-            { q: "Ada cowok tajir deketin kamu?", a: ["Respon dikit", "Cuma butuh Arifin", "Minta beliin barang"], c: 1 },
-            { q: "Seberapa sayang kamu sama Arifin?", a: ["Gak sayang", "Dikit", "Banget banget banget!"], c: 2 },
-            { q: "Kalau Arifin lagi susah, kamu?", a: ["Ninggalin", "Nemenin & dukung", "Cari yang mapan"], c: 1 },
-            { q: "Pilih: Kehilangan Arifin atau Kehilangan HP?", a: ["Kehilangan Arifin", "Kehilangan HP", "Gak tau"], c: 1 },
-            { q: "Siapa pemilik masa depan kamu?", a: ["Gak tau", "Arifin", "Mantan"], c: 1 },
-            { q: "Kalau Arifin minta cium, dikasih?", a: ["Gak mau", "Boleh dong", "Dikasih banyak!"], c: 2 },
-            { q: "Arifin cemburu kamu deket cowok lain, kamu?", a: ["Marahin balik", "Jaga jarak demi dia", "Bodo amat"], c: 1 },
-            { q: "Janji gak bakal bohong sama Arifin?", a: ["Gak janji", "Janji suci!", "Tergantung"], c: 1 },
-            { q: "Siapa yang paling spesial di galeri HP?", a: ["Foto Arifin", "Selfie sendiri", "Foto cowok lain"], c: 0 },
-            { q: "Ada yang jelek-jelekin Arifin, kamu?", a: ["Ikut ketawa", "Bela abis-abisan", "Diem aja"], c: 1 },
-            { q: "Arifin itu bagi kamu adalah?", a: ["Beban", "Anugerah terindah", "Temen biasa"], c: 1 },
-            { q: "Mau nikah sama Arifin?", a: ["Mau banget!", "Gak tau ya", "Males"], c: 0 },
-            { q: "Ajak makan di pinggir jalan, kamu?", a: ["Gengsi", "Mau asalkan sama dia", "Minta mahal"], c: 1 },
-            { q: "Sering kangen Arifin gak?", a: ["Gak pernah", "Tiap detik kangen", "Kalo gabut"], c: 1 },
-            { q: "Arifin minta password IG kamu?", a: ["Privacy!", "Dikasih tanpa mikir", "Ganti dulu"], c: 1 },
-            { q: "Pernah kepikiran buat selingkuh?", a: ["Sering", "Gak pernah sama sekali!", "Pernah dikit"], c: 1 },
-            { q: "Terakhir, Arifin itu milik siapa?", a: ["Milik bersama", "Milik aku selamanya", "Milik emaknya"], c: 1 }
-        ];
+        const keyBenar = "RAIYSA";
+        const inputKey = document.getElementById('access-input');
+        const overlay = document.getElementById('access-overlay');
+        const content = document.getElementById('mainContent');
+        const audio = document.getElementById('player');
 
-        let currentIdx = 0;
-        let score = 0;
-        let selectedOpt = null;
-        let userResults = [];
+        // Fungsi Cek Key
+        inputKey.addEventListener('input', function() {
+            if (this.value.toUpperCase() === keyBenar) {
+                // Sembunyikan Overlay
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    content.style.display = 'block';
+                    // Mulai Bintang
+                    buatBintang();
+                    // Putar Audio Otomatis
+                    audio.play();
+                }, 1000);
+            }
+        });
 
-        function displayQuestion() {
-            const q = questions[currentIdx];
-            document.getElementById('q-number').innerText = `Pertanyaan ${currentIdx + 1}/20`;
-            let html = `<div class="q-text">${q.q}</div>`;
-            q.a.forEach((opt, i) => {
-                html += `<div class="option" onclick="selectOpt(${i}, this)">${opt}</div>`;
-            });
-            document.getElementById('question-box').innerHTML = html;
-        }
+        // Fungsi Bintang Jatuh
+        function buatBintang() {
+            const container = document.getElementById('starContainer');
+            const starCount = 120; 
 
-        function selectOpt(idx, el) {
-            selectedOpt = idx;
-            document.querySelectorAll('.option').forEach(e => e.classList.remove('selected'));
-            el.classList.add('selected');
-        }
-
-        function nextQuestion() {
-            if (selectedOpt === null) return alert("Jawab dulu ya sayang!");
-            
-            let isCorrect = (selectedOpt === questions[currentIdx].c);
-            if (isCorrect) score += 5;
-            userResults.push(isCorrect);
-
-            currentIdx++;
-            selectedOpt = null;
-
-            if (currentIdx < questions.length) {
-                displayQuestion();
-            } else {
-                showResult();
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1 + 'px';
+                star.style.width = size;
+                star.style.height = size;
+                star.style.left = Math.random() * 100 + 'vw';
+                const duration = Math.random() * 10 + 5 + 's';
+                star.style.animationDuration = duration;
+                star.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(star);
             }
         }
-
-        function showResult() {
-            document.getElementById('quiz-content').style.display = 'none';
-            document.getElementById('result-screen').style.display = 'block';
-            document.getElementById('final-score').innerText = score + "%";
-            
-            let reviewHtml = "";
-            userResults.forEach((res, i) => {
-                reviewHtml += `<div class="review-box ${res ? 'bg-green' : 'bg-red'}">${i+1}</div>`;
-            });
-            document.getElementById('review-list').innerHTML = reviewHtml;
-            
-            let msg = "";
-            if (score === 100) {
-                msg = "<b>SEMPURNA!</b><br>Kamu terbukti 100% setia. Arifin beneran beruntung punya kamu. Love you! ❤️";
-                document.getElementById('final-score').style.color = "#28a745";
-                document.getElementById('final-score').style.borderColor = "#28a745";
-            } else if (score >= 80) {
-                msg = "<b>Hampir Setia!</b><br>Masih ada yang salah dikit. Coba diperbaiki lagi ya kejujurannya buat Arifin.";
-            } else {
-                msg = "<b>WADUH!</b><br>Skor kamu rendah banget. Kamu beneran sayang Arifin gak sih? Jelaskan ke Arifin sekarang!";
-            }
-            document.getElementById('result-msg').innerHTML = msg;
-        }
-
-        displayQuestion();
     </script>
 </body>
 </html>
