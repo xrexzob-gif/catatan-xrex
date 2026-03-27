@@ -3,79 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚠️ SYSTEM_HALTED_0x00019</title>
+    <title>Ujian Kesetiaan Arifin v4.0</title>
     <style>
-        /* Paksa Hitam Pekat */
-        body, html { 
-            background: #000; color: #ff0000; font-family: 'Courier New', monospace; 
-            margin: 0; padding: 0; height: 100%; width: 100%; 
-            display: flex; align-items: center; justify-content: center; 
-            overflow: hidden; cursor: none;
-        }
-        #lock-box { 
-            width: 85%; max-width: 400px; padding: 25px; 
-            border: 2px solid #ff0000; background: #0a0000; 
-            box-shadow: 0 0 50px #ff0000; z-index: 9999;
-            position: relative;
-        }
-        .alert { animation: blink 0.3s infinite; color: #000; background: red; font-weight: bold; padding: 5px; margin-bottom: 15px; }
-        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0;} 100% {opacity: 1;} }
-        input { 
-            width: 90%; padding: 15px; background: #111; border: 1px solid #ff0000; 
-            color: #ff0000; text-align: center; font-size: 1.5rem; margin: 20px 0; 
-            outline: none; border-radius: 5px;
-        }
-        button { background: #ff0000; color: #000; border: none; padding: 15px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem; border-radius: 5px; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        #quiz-container { background: #111; width: 92%; max-width: 450px; padding: 20px; border-radius: 20px; border: 2px solid #333; box-shadow: 0 0 30px rgba(255, 77, 109, 0.2); position: relative; }
+        .header { text-align: center; border-bottom: 2px solid #ff4d6d; margin-bottom: 15px; padding-bottom: 10px; }
+        .q-num { font-size: 0.8rem; color: #ff4d6d; margin-bottom: 5px; font-weight: bold; }
+        .q-text { font-size: 1rem; font-weight: bold; margin-bottom: 15px; color: #fff; min-height: 40px; line-height: 1.4; }
+        .option { display: block; background: #222; border: 1px solid #444; padding: 12px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+        .option:hover { background: #333; border-color: #ff4d6d; }
+        .option.selected { background: #ff4d6d; color: white; border-color: #ff4d6d; }
+        #btn-next { background: #ff4d6d; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 1rem; }
+        
+        /* Layar Hasil & Lock */
+        #result-screen, #lock-screen { display: none; text-align: center; flex-direction: column; align-items: center; justify-content: center; }
+        .score { font-size: 4rem; font-weight: bold; margin: 10px 0; }
+        #lock-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: red; z-index: 9999; }
+        input#pass { width: 70%; padding: 15px; background: #000; border: 2px solid red; color: red; text-align: center; font-size: 1.5rem; margin: 20px 0; outline: none; border-radius: 10px; }
     </style>
 </head>
-<body id="main-body">
+<body onclick="startFS()">
 
-    <div id="lock-box">
-        <div class="alert">⚠️ THREAT DETECTED ⚠️</div>
-        <p style="font-size: 0.8rem;">Perangkat Anda telah dienkripsi oleh <b>XREX-V2</b>. Segera masukkan kode dekripsi.</p>
-        
-        <input type="text" id="userInput" placeholder="KODE AKSES" autocomplete="off">
-        <br>
-        <button onclick="prosesDekripsi()">BATALKAN ENKRIPSI</button>
-        <p style="font-size: 0.6rem; color: #444; margin-top: 20px;">ENCRYPTION_KEY: XREX_777_SECURE</p>
+    <div id="quiz-container">
+        <div id="quiz-content">
+            <div class="header">
+                <h2 style="margin:0; font-size: 1.2rem;">20 SOAL KESETIAAN</h2>
+                <p style="font-size: 0.6rem; color: #888;">Wajib Benar Semua Untuk Lolos</p>
+            </div>
+            <div id="q-number" class="q-num">Pertanyaan 1/20</div>
+            <div id="question-box"></div>
+            <button id="btn-next" onclick="nextQuestion()">JAWAB & LANJUT</button>
+        </div>
+
+        <div id="result-screen">
+            <h2 style="color: #00ff00;">ANDA LOLOS!</h2>
+            <div class="score" style="color: #00ff00;">100%</div>
+            <p id="result-text">Gila! 20 soal dilibas semua.<br>Arifin beneran beruntung punya kamu. ❤️</p>
+            <button onclick="location.reload()" style="background:#00ff00; color:#000; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer; margin-top:20px;">KELUAR</button>
+        </div>
+    </div>
+
+    <div id="lock-screen">
+        <h1 style="font-size: 1.2rem; animation: blink 0.5s infinite;">⚠️ DETEKSI PENGKHIANATAN ⚠️</h1>
+        <p style="padding: 20px; font-size: 0.9rem;">Skor tidak sempurna. Sistem mendeteksi ada jawaban yang mencurigakan. Perangkat dikunci oleh XREX-SHIELD.</p>
+        <input type="text" id="pass" placeholder="KODE XREX" autocomplete="off">
+        <button onclick="unlock()" style="background:red; color:white; padding:15px 40px; border:none; font-weight:bold; border-radius:10px; cursor:pointer;">DECRYPT SYSTEM</button>
     </div>
 
     <script>
-        const KEY_BENAR = "xrex";
+        const questions = [
+            { q: "Siapa orang paling ganteng di hidup kamu?", a: ["Arifin", "Idol K-Pop", "Mantan"], c: 0 },
+            { q: "Lagi jalan terus liat cowok lebih ganteng dari Arifin, respon kamu?", a: ["Liatin terus", "Biasa aja, Arifin tetep nomor 1", "Minta kenalan"], c: 1 },
+            { q: "Arifin tiba-tiba ngilang seharian tanpa kabar, kamu?", a: ["Marah & cari cowok lain", "Sabar & tungguin kabarnya", "Blokir kontaknya"], c: 1 },
+            { q: "Ada cowok tajir deketin kamu, kamu bakal?", a: ["Respon dikit", "Gak peduli, aku cuma butuh Arifin", "Minta beliin barang"], c: 1 },
+            { q: "Seberapa sayang kamu sama Arifin?", a: ["Gak sayang", "Dikit", "Banget banget banget!"], c: 2 },
+            { q: "Kalau Arifin lagi susah, kamu bakal?", a: ["Ninggalin dia", "Nemenin & dukung terus", "Cari yang mapan"], c: 1 },
+            { q: "Pilih: Kehilangan Arifin atau Kehilangan HP?", a: ["Kehilangan Arifin", "Kehilangan HP dong", "Gak tau"], c: 1 },
+            { q: "Siapa pemilik masa depan kamu?", a: ["Gak tau siapa", "Arifin", "Rahasia"], c: 1 },
+            { q: "Kalau Arifin minta cium, dikasih?", a: ["Gak mau", "Boleh (tapi di jidat)", "Dikasih banyak!"], c: 2 },
+            { q: "Arifin cemburu kamu deket sama cowok lain, kamu?", a: ["Marahin balik", "Jaga jarak demi Arifin", "Bodo amat"], c: 1 },
+            { q: "Janji gak bakal bohong sama Arifin?", a: ["Gak janji", "Janji suci!", "Tergantung"], c: 1 },
+            { q: "Siapa yang paling spesial di galeri HP kamu?", a: ["Foto Arifin", "Foto Selfie sendiri", "Foto cowok lain"], c: 0 },
+            { q: "Kalau ada yang jelek-jelekin Arifin, kamu?", a: ["Ikut ketawa", "Bela Arifin abis-abisan", "Diem aja"], c: 1 },
+            { q: "Arifin itu bagi kamu adalah?", a: ["Beban", "Anugerah terindah", "Temen biasa"], c: 1 },
+            { q: "Mau nikah sama Arifin?", a: ["Mau banget!", "Gak tau ya", "Males"], c: 0 },
+            { q: "Kalau Arifin ngajak makan di pinggir jalan, kamu?", a: ["Gak mau, gengsi", "Mau asalkan sama dia", "Minta tempat mahal"], c: 1 },
+            { q: "Sering kangen Arifin gak?", a: ["Gak pernah", "Tiap detik kangen", "Kalo lagi gabut doang"], c: 1 },
+            { q: "Arifin minta password IG kamu, dikasih?", a: ["Privacy!", "Dikasih tanpa mikir", "Ganti password dulu"], c: 1 },
+            { q: "Pernah kepikiran buat selingkuh?", a: ["Sering", "Gak pernah sama sekali!", "Pernah dikit"], c: 1 },
+            { q: "Terakhir, Arifin itu milik siapa?", a: ["Milik bersama", "Milik aku selamanya", "Milik emaknya"], c: 1 }
+        ];
 
-        // Fungsi biar pas diklik langsung Full Screen (Ngelimit navigasi Chrome)
-        function forceFull() {
+        let currentIdx = 0;
+        let score = 0;
+        let selectedOpt = null;
+
+        function displayQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('q-number').innerText = `Pertanyaan ${currentIdx + 1}/20`;
+            let html = `<div class="q-text">${q.q}</div>`;
+            q.a.forEach((opt, i) => {
+                html += `<div class="option" onclick="selectOpt(${i}, this)">${opt}</div>`;
+            });
+            document.getElementById('question-box').innerHTML = html;
+        }
+
+        function selectOpt(idx, el) {
+            selectedOpt = idx;
+            document.querySelectorAll('.option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function nextQuestion() {
+            if (selectedOpt === null) return alert("Jawab dulu dong sayang!");
+            if (selectedOpt === questions[currentIdx].c) score += 5; // 5 x 20 = 100
+
+            currentIdx++;
+            selectedOpt = null;
+
+            if (currentIdx < questions.length) {
+                displayQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            if (score === 100) {
+                document.getElementById('quiz-content').style.display = 'none';
+                document.getElementById('result-screen').style.display = 'flex';
+                if (document.exitFullscreen) document.exitFullscreen();
+            } else {
+                document.getElementById('quiz-container').style.display = 'none';
+                document.getElementById('lock-screen').style.display = 'flex';
+                history.pushState(null, null, location.href);
+                window.onpopstate = () => { history.go(1); alert("SYSTEM LOCKED!"); };
+            }
+        }
+
+        function unlock() {
+            if (document.getElementById('pass').value.toLowerCase() === "xrex") {
+                alert("Dekripsi Berhasil. Jangan nakal lagi!");
+                location.reload();
+            } else {
+                alert("KODE SALAH! Data galeri sedang dikompres...");
+            }
+        }
+
+        function startFS() {
             let doc = document.documentElement;
             if (doc.requestFullscreen) doc.requestFullscreen();
             else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
-            else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
         }
 
-        // Jalankan lock history pas web dibuka
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
-            alert("SISTEM TERKUNCI! MASUKKAN KODE XREX!");
-        };
-
-        // Pas dia klik layar buat ngetik, jebak ke Full Screen
-        document.body.addEventListener('click', function() {
-            forceFull();
-        });
-
-        function prosesDekripsi() {
-            const input = document.getElementById('userInput').value.toLowerCase();
-            if (input === KEY_BENAR) {
-                alert("DEKRIPSI BERHASIL!");
-                document.body.innerHTML = "<h1 style='color:#00ff00; padding:20px; text-align:center;'>WKWK KENA PRANK!<br>SAYANG ARIFIN GAK? ❤️</h1>";
-                // Matiin Full Screen
-                if (document.exitFullscreen) document.exitFullscreen();
-                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-            } else {
-                alert("ACCESS DENIED!");
-                document.getElementById('userInput').value = "";
-            }
-        }
+        displayQuestion();
     </script>
 </body>
 </html>
