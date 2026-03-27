@@ -3,73 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ujian Kesetiaan Arifin v4.0</title>
+    <title>Ujian Kesetiaan Arifin v6.0</title>
     <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        #quiz-container { background: #111; width: 92%; max-width: 450px; padding: 20px; border-radius: 20px; border: 2px solid #333; box-shadow: 0 0 30px rgba(255, 77, 109, 0.2); position: relative; }
-        .header { text-align: center; border-bottom: 2px solid #ff4d6d; margin-bottom: 15px; padding-bottom: 10px; }
-        .q-num { font-size: 0.8rem; color: #ff4d6d; margin-bottom: 5px; font-weight: bold; }
-        .q-text { font-size: 1rem; font-weight: bold; margin-bottom: 15px; color: #fff; min-height: 40px; line-height: 1.4; }
-        .option { display: block; background: #222; border: 1px solid #444; padding: 12px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
-        .option:hover { background: #333; border-color: #ff4d6d; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: #fafafa; color: #333; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        #quiz-container { background: #fff; width: 92%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .header { text-align: center; border-bottom: 2px solid #ff4d6d; margin-bottom: 20px; padding-bottom: 10px; }
+        .q-num { font-size: 0.8rem; color: #888; margin-bottom: 5px; }
+        .q-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #222; line-height: 1.4; }
+        .option { display: block; background: #f8f9fa; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .option:hover { background: #fff0f3; border-color: #ff4d6d; }
         .option.selected { background: #ff4d6d; color: white; border-color: #ff4d6d; }
-        #btn-next { background: #ff4d6d; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 1rem; }
+        #btn-next { background: #ff4d6d; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 10px; }
         
-        /* Layar Hasil & Lock */
-        #result-screen, #lock-screen { display: none; text-align: center; flex-direction: column; align-items: center; justify-content: center; }
-        .score { font-size: 4rem; font-weight: bold; margin: 10px 0; }
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: red; z-index: 9999; }
-        input#pass { width: 70%; padding: 15px; background: #000; border: 2px solid red; color: red; text-align: center; font-size: 1.5rem; margin: 20px 0; outline: none; border-radius: 10px; }
+        /* Layar Hasil Evaluasi */
+        #result-screen { display: none; text-align: center; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 8px solid #ff4d6d; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; margin: 20px auto; color: #ff4d6d; }
+        .review-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+        .review-box { padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; color: white; }
+        .bg-green { background: #28a745; }
+        .bg-red { background: #dc3545; }
+        .final-msg { font-size: 1rem; line-height: 1.5; color: #555; margin-bottom: 25px; }
     </style>
 </head>
-<body onclick="startFS()">
+<body>
 
     <div id="quiz-container">
         <div id="quiz-content">
             <div class="header">
-                <h2 style="margin:0; font-size: 1.2rem;">20 SOAL KESETIAAN</h2>
-                <p style="font-size: 0.6rem; color: #888;">Wajib Benar Semua Untuk Lolos</p>
+                <h2 style="margin:0; color: #ff4d6d;">LOYALTY TEST</h2>
+                <p style="font-size: 0.7rem; color: #888;">Arifin's Official Relationship Exam</p>
             </div>
             <div id="q-number" class="q-num">Pertanyaan 1/20</div>
             <div id="question-box"></div>
-            <button id="btn-next" onclick="nextQuestion()">JAWAB & LANJUT</button>
+            <button id="btn-next" onclick="nextQuestion()">LANJUT →</button>
         </div>
 
         <div id="result-screen">
-            <h2 style="color: #00ff00;">ANDA LOLOS!</h2>
-            <div class="score" style="color: #00ff00;">100%</div>
-            <p id="result-text">Gila! 20 soal dilibas semua.<br>Arifin beneran beruntung punya kamu. ❤️</p>
-            <button onclick="location.reload()" style="background:#00ff00; color:#000; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer; margin-top:20px;">KELUAR</button>
+            <div class="header"><h2 style="margin:0;">HASIL UJIAN</h2></div>
+            <div class="score-circle" id="final-score">0%</div>
+            
+            <p style="font-size: 0.9rem; font-weight: bold;">Rincian Jawaban (1-20):</p>
+            <div id="review-list" class="review-grid"></div>
+            
+            <p class="final-msg" id="result-msg"></p>
+            
+            <button onclick="location.reload()" style="background:#333; color:white; border:none; padding:15px; width:100%; border-radius:12px; font-weight:bold; cursor:pointer;">ULANGI UJIAN</button>
         </div>
-    </div>
-
-    <div id="lock-screen">
-        <h1 style="font-size: 1.2rem; animation: blink 0.5s infinite;">⚠️ DETEKSI PENGKHIANATAN ⚠️</h1>
-        <p style="padding: 20px; font-size: 0.9rem;">Skor tidak sempurna. Sistem mendeteksi ada jawaban yang mencurigakan. Perangkat dikunci oleh XREX-SHIELD.</p>
-        <input type="text" id="pass" placeholder="KODE XREX" autocomplete="off">
-        <button onclick="unlock()" style="background:red; color:white; padding:15px 40px; border:none; font-weight:bold; border-radius:10px; cursor:pointer;">DECRYPT SYSTEM</button>
     </div>
 
     <script>
         const questions = [
             { q: "Siapa orang paling ganteng di hidup kamu?", a: ["Arifin", "Idol K-Pop", "Mantan"], c: 0 },
-            { q: "Lagi jalan terus liat cowok lebih ganteng dari Arifin, respon kamu?", a: ["Liatin terus", "Biasa aja, Arifin tetep nomor 1", "Minta kenalan"], c: 1 },
-            { q: "Arifin tiba-tiba ngilang seharian tanpa kabar, kamu?", a: ["Marah & cari cowok lain", "Sabar & tungguin kabarnya", "Blokir kontaknya"], c: 1 },
-            { q: "Ada cowok tajir deketin kamu, kamu bakal?", a: ["Respon dikit", "Gak peduli, aku cuma butuh Arifin", "Minta beliin barang"], c: 1 },
+            { q: "Kalau ada cowok lebih ganteng, respon kamu?", a: ["Liatin terus", "Arifin tetep nomor 1", "Minta kenalan"], c: 1 },
+            { q: "Arifin tiba-bitu ngilang seharian, kamu?", a: ["Marah", "Sabar & tungguin", "Cari cowok lain"], c: 1 },
+            { q: "Ada cowok tajir deketin kamu?", a: ["Respon dikit", "Cuma butuh Arifin", "Minta beliin barang"], c: 1 },
             { q: "Seberapa sayang kamu sama Arifin?", a: ["Gak sayang", "Dikit", "Banget banget banget!"], c: 2 },
-            { q: "Kalau Arifin lagi susah, kamu bakal?", a: ["Ninggalin dia", "Nemenin & dukung terus", "Cari yang mapan"], c: 1 },
-            { q: "Pilih: Kehilangan Arifin atau Kehilangan HP?", a: ["Kehilangan Arifin", "Kehilangan HP dong", "Gak tau"], c: 1 },
-            { q: "Siapa pemilik masa depan kamu?", a: ["Gak tau siapa", "Arifin", "Rahasia"], c: 1 },
-            { q: "Kalau Arifin minta cium, dikasih?", a: ["Gak mau", "Boleh (tapi di jidat)", "Dikasih banyak!"], c: 2 },
-            { q: "Arifin cemburu kamu deket sama cowok lain, kamu?", a: ["Marahin balik", "Jaga jarak demi Arifin", "Bodo amat"], c: 1 },
+            { q: "Kalau Arifin lagi susah, kamu?", a: ["Ninggalin", "Nemenin & dukung", "Cari yang mapan"], c: 1 },
+            { q: "Pilih: Kehilangan Arifin atau Kehilangan HP?", a: ["Kehilangan Arifin", "Kehilangan HP", "Gak tau"], c: 1 },
+            { q: "Siapa pemilik masa depan kamu?", a: ["Gak tau", "Arifin", "Mantan"], c: 1 },
+            { q: "Kalau Arifin minta cium, dikasih?", a: ["Gak mau", "Boleh dong", "Dikasih banyak!"], c: 2 },
+            { q: "Arifin cemburu kamu deket cowok lain, kamu?", a: ["Marahin balik", "Jaga jarak demi dia", "Bodo amat"], c: 1 },
             { q: "Janji gak bakal bohong sama Arifin?", a: ["Gak janji", "Janji suci!", "Tergantung"], c: 1 },
-            { q: "Siapa yang paling spesial di galeri HP kamu?", a: ["Foto Arifin", "Foto Selfie sendiri", "Foto cowok lain"], c: 0 },
-            { q: "Kalau ada yang jelek-jelekin Arifin, kamu?", a: ["Ikut ketawa", "Bela Arifin abis-abisan", "Diem aja"], c: 1 },
+            { q: "Siapa yang paling spesial di galeri HP?", a: ["Foto Arifin", "Selfie sendiri", "Foto cowok lain"], c: 0 },
+            { q: "Ada yang jelek-jelekin Arifin, kamu?", a: ["Ikut ketawa", "Bela abis-abisan", "Diem aja"], c: 1 },
             { q: "Arifin itu bagi kamu adalah?", a: ["Beban", "Anugerah terindah", "Temen biasa"], c: 1 },
             { q: "Mau nikah sama Arifin?", a: ["Mau banget!", "Gak tau ya", "Males"], c: 0 },
-            { q: "Kalau Arifin ngajak makan di pinggir jalan, kamu?", a: ["Gak mau, gengsi", "Mau asalkan sama dia", "Minta tempat mahal"], c: 1 },
-            { q: "Sering kangen Arifin gak?", a: ["Gak pernah", "Tiap detik kangen", "Kalo lagi gabut doang"], c: 1 },
-            { q: "Arifin minta password IG kamu, dikasih?", a: ["Privacy!", "Dikasih tanpa mikir", "Ganti password dulu"], c: 1 },
+            { q: "Ajak makan di pinggir jalan, kamu?", a: ["Gengsi", "Mau asalkan sama dia", "Minta mahal"], c: 1 },
+            { q: "Sering kangen Arifin gak?", a: ["Gak pernah", "Tiap detik kangen", "Kalo gabut"], c: 1 },
+            { q: "Arifin minta password IG kamu?", a: ["Privacy!", "Dikasih tanpa mikir", "Ganti dulu"], c: 1 },
             { q: "Pernah kepikiran buat selingkuh?", a: ["Sering", "Gak pernah sama sekali!", "Pernah dikit"], c: 1 },
             { q: "Terakhir, Arifin itu milik siapa?", a: ["Milik bersama", "Milik aku selamanya", "Milik emaknya"], c: 1 }
         ];
@@ -77,6 +78,7 @@
         let currentIdx = 0;
         let score = 0;
         let selectedOpt = null;
+        let userResults = [];
 
         function displayQuestion() {
             const q = questions[currentIdx];
@@ -95,8 +97,11 @@
         }
 
         function nextQuestion() {
-            if (selectedOpt === null) return alert("Jawab dulu dong sayang!");
-            if (selectedOpt === questions[currentIdx].c) score += 5; // 5 x 20 = 100
+            if (selectedOpt === null) return alert("Jawab dulu ya sayang!");
+            
+            let isCorrect = (selectedOpt === questions[currentIdx].c);
+            if (isCorrect) score += 5;
+            userResults.push(isCorrect);
 
             currentIdx++;
             selectedOpt = null;
@@ -104,36 +109,32 @@
             if (currentIdx < questions.length) {
                 displayQuestion();
             } else {
-                finishQuiz();
+                showResult();
             }
         }
 
-        function finishQuiz() {
+        function showResult() {
+            document.getElementById('quiz-content').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = score + "%";
+            
+            let reviewHtml = "";
+            userResults.forEach((res, i) => {
+                reviewHtml += `<div class="review-box ${res ? 'bg-green' : 'bg-red'}">${i+1}</div>`;
+            });
+            document.getElementById('review-list').innerHTML = reviewHtml;
+            
+            let msg = "";
             if (score === 100) {
-                document.getElementById('quiz-content').style.display = 'none';
-                document.getElementById('result-screen').style.display = 'flex';
-                if (document.exitFullscreen) document.exitFullscreen();
+                msg = "<b>SEMPURNA!</b><br>Kamu terbukti 100% setia. Arifin beneran beruntung punya kamu. Love you! ❤️";
+                document.getElementById('final-score').style.color = "#28a745";
+                document.getElementById('final-score').style.borderColor = "#28a745";
+            } else if (score >= 80) {
+                msg = "<b>Hampir Setia!</b><br>Masih ada yang salah dikit. Coba diperbaiki lagi ya kejujurannya buat Arifin.";
             } else {
-                document.getElementById('quiz-container').style.display = 'none';
-                document.getElementById('lock-screen').style.display = 'flex';
-                history.pushState(null, null, location.href);
-                window.onpopstate = () => { history.go(1); alert("SYSTEM LOCKED!"); };
+                msg = "<b>WADUH!</b><br>Skor kamu rendah banget. Kamu beneran sayang Arifin gak sih? Jelaskan ke Arifin sekarang!";
             }
-        }
-
-        function unlock() {
-            if (document.getElementById('pass').value.toLowerCase() === "xrex") {
-                alert("Dekripsi Berhasil. Jangan nakal lagi!");
-                location.reload();
-            } else {
-                alert("KODE SALAH! Data galeri sedang dikompres...");
-            }
-        }
-
-        function startFS() {
-            let doc = document.documentElement;
-            if (doc.requestFullscreen) doc.requestFullscreen();
-            else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+            document.getElementById('result-msg').innerHTML = msg;
         }
 
         displayQuestion();
