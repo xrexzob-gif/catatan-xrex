@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>four girls💅💞 | Forever</title>
+    <title>four girls💅💞 | Together Forever</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Reenie+Beanie&display=swap');
 
@@ -27,8 +27,41 @@
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
         }
 
+        /* PESAN BERJALAN DI ATAS JUDUL */
+        .top-ticker {
+            position: fixed; 
+            top: 30px; 
+            width: 100%; 
+            overflow: hidden;
+            white-space: nowrap;
+            background: rgba(255, 182, 193, 0.05);
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-content span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #ffb6c1;
+            padding-right: 100px;
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
         /* JUDUL GLOWING */
-        header { margin-bottom: 20px; z-index: 5; text-align: center; }
+        header { margin-top: 60px; margin-bottom: 20px; z-index: 5; text-align: center; }
         header h1 { 
             font-size: 2.8rem; 
             letter-spacing: -1px; 
@@ -41,14 +74,8 @@
         }
 
         @keyframes glowPulse {
-            from {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6);
-                transform: scale(1);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8);
-                transform: scale(1.03);
-            }
+            from { transform: scale(1); text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6); }
+            to { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8); }
         }
 
         /* MARQUEE FOTO */
@@ -68,28 +95,6 @@
 
         @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* PESAN RAHASIA */
-        .message-icon {
-            position: fixed; top: 25px; right: 25px; z-index: 200;
-            cursor: pointer; background: rgba(255,255,255,0.1);
-            padding: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
-            transition: 0.4s;
-        }
-        .message-icon:hover { transform: scale(1.1); background: rgba(255,118,117,0.4); }
-
-        .overlay-msg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 300;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; text-align: center; backdrop-filter: blur(10px);
-        }
-        .overlay-msg.active { display: flex; }
-        .secret-content { 
-            font-family: 'Reenie Beanie', cursive; font-size: 2.2rem; line-height: 1.4; 
-            max-width: 500px; color: #fff;
-        }
-        .close-btn { margin-top: 50px; cursor: pointer; font-size: 0.7rem; letter-spacing: 4px; color: #ff7675; }
-
         #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
     </style>
 </head>
@@ -97,19 +102,14 @@
 
 <div class="stars-bg"></div>
 
-<div class="message-icon" onclick="toggleMessage()">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-</div>
-
-<div class="overlay-msg" id="msgOverlay">
-    <div class="secret-content">
-        Jagalah persahabatan kalian sampai dewasa nanti, sampai kapanpun itu. <br><br>
-        Jangan sampai persahabatan ini hancur cuma karena ego atau hal-hal sepele. Jaga baik-baik ikatan yang udah kita punya sekarang ya. <br><br>
-        Raisya, Syifa, Diva, Tasya... <br>
-        Tetap bareng-bareng terus, sukses bareng-bareng, dan jangan pernah berubah. <br>
-        Kalian berempat berharga banget! 💞✨
+<div class="top-ticker">
+    <div class="ticker-content" id="ticker">
+        <span>JAGALAH PERSAHABATAN KALIAN SAMPAI DEWASA NANTI 🌸</span>
+        <span>JANGAN SAMPAI HANCUR CUMA KARENA EGO ATAU HAL SEPELE ✨</span>
+        <span>RAISYA, SYIFA, DIVA, TASYA... TETAP BARENG TERUS YA 💞</span>
+        <span>SUKSES BARENG-BARENG DAN JANGAN PERNAH BERUBAH 💅</span>
+        <span>KALIAN BEREMPAT BERHARGA BANGET... TOGETHER TILL THE END! 💎</span>
     </div>
-    <div class="close-btn" onclick="toggleMessage()">[ CLOSE MESSAGE ]</div>
 </div>
 
 <header>
@@ -132,17 +132,17 @@
     </div>
 </div>
 
-<p id="tapText">TAP ANYWHERE TO PLAY VIBE 🔊</p>
+<p id="tapText">TAP ANYWHERE TO PLAY MUSIC 🔊</p>
 
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
+    // Duplicate photos & messages for smooth infinite loop
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
-    function toggleMessage() {
-        document.getElementById('msgOverlay').classList.toggle('active');
-    }
+    const ticker = document.getElementById('ticker');
+    ticker.innerHTML += ticker.innerHTML;
 
     let isMusicPlaying = false;
     document.addEventListener('click', () => {
