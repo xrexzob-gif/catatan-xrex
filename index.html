@@ -8,12 +8,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Reenie+Beanie&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* BACKGROUND HITAM BINTANG */
         body { 
-            background: #000;
-            overflow-x: hidden;
-            color: #fff;
+            background: #000; overflow-x: hidden; color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex; justify-content: center; min-height: 100vh;
         }
@@ -22,9 +18,7 @@
         .stars-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            overflow: hidden;
         }
-        
         .star {
             position: absolute; background: white; border-radius: 50%;
             opacity: 0.5; animation: moveStars linear infinite;
@@ -36,85 +30,77 @@
 
         .container {
             width: 100%; max-width: 450px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(10px);
             min-height: 100vh; padding-bottom: 50px;
             border-left: 1px solid rgba(255,255,255,0.1);
             border-right: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* MUSIC BAR */
-        .music-bar {
-            position: sticky; top: 15px; z-index: 100;
-            background: #ff7675; width: 85%; margin: 0 auto;
-            padding: 15px 20px; border-radius: 50px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(255, 118, 117, 0.4);
-            cursor: pointer; transition: 0.3s;
+        /* FLOATING MUSIC INDICATOR */
+        .music-notif {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 118, 117, 0.9); padding: 10px 20px;
+            border-radius: 50px; font-size: 0.7rem; font-weight: 600;
+            z-index: 999; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.4);
+            transition: 0.5s; opacity: 1;
         }
-        .music-bar:active { transform: scale(0.95); }
-        .music-info { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 600; color: white; }
 
-        header { padding: 60px 20px 30px; text-align: center; }
+        header { padding: 80px 20px 40px; text-align: center; }
         header h1 { font-weight: 600; font-size: 2.2rem; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
         header p { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 3px; margin-top: 8px; }
 
         .quote-box {
-            margin: 0 30px 45px; padding: 25px;
+            margin: 0 30px 50px; padding: 25px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px; text-align: center;
             border: 1px dashed rgba(255, 118, 117, 0.5);
         }
-        .quote-box p { font-size: 0.95rem; font-style: italic; color: #eee; }
 
-        /* POLAROID */
+        /* POLAROID GALLERY */
         .photo-list { padding: 0 30px; }
         .polaroid {
             background: white; padding: 15px 15px 45px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            margin-bottom: 45px; transition: 0.4s;
+            margin-bottom: 50px; transition: 0.4s;
         }
-        .polaroid:nth-child(odd) { transform: rotate(-2deg); }
-        .polaroid:nth-child(even) { transform: rotate(2deg); }
+        /* Variasi rotasi foto biar natural */
+        .polaroid:nth-child(3n+1) { transform: rotate(-2deg); }
+        .polaroid:nth-child(3n+2) { transform: rotate(2deg); }
+        .polaroid:nth-child(3n+3) { transform: rotate(-1deg); }
+
         .polaroid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 20px; }
         .polaroid .caption {
             font-family: 'Reenie Beanie', cursive; font-size: 1.9rem;
             color: #2d3436; text-align: center;
         }
 
-        footer { text-align: center; padding: 40px; color: #555; font-size: 0.75rem; letter-spacing: 1px; }
+        footer { text-align: center; padding: 40px; color: #555; font-size: 0.75rem; }
 
         /* EQUALIZER */
-        .eq { display: flex; align-items: flex-end; gap: 3px; height: 16px; }
-        .bar { width: 3px; background: white; animation: bounce 0.6s infinite alternate; }
-        .paused .bar { animation-play-state: paused; height: 3px; }
-        @keyframes bounce { from { height: 4px; } to { height: 16px; } }
+        .eq { display: flex; align-items: flex-end; gap: 3px; height: 12px; }
+        .bar { width: 2px; background: white; animation: bounce 0.6s infinite alternate; }
+        @keyframes bounce { from { height: 2px; } to { height: 12px; } }
     </style>
 </head>
 <body>
 
 <div class="stars-container" id="starField"></div>
 
+<div class="music-notif" id="musicStatus">
+    <div class="eq"><div class="bar"></div><div class="bar" style="animation-delay:0.2s"></div><div class="bar" style="animation-delay:0.4s"></div></div>
+    <span>SCROLL UNTUK MUSIK ✨</span>
+</div>
+
 <div class="container">
     <audio id="mainAudio" loop>
         <source src="hindia.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="music-bar" id="musicBtn" onclick="toggleMusic()">
-        <div class="music-info">
-            <div class="eq paused" id="eq">
-                <div class="bar" style="animation-delay: 0.1s"></div>
-                <div class="bar" style="animation-delay: 0.3s"></div>
-                <div class="bar" style="animation-delay: 0.2s"></div>
-            </div>
-            <span id="m-status">KLIK BIAR NYALA ✨</span>
-        </div>
-        <span id="m-icon">▶️</span>
-    </div>
-
     <header>
         <h1>four girls💅💞</h1>
-        <p>forever circle</p>
+        <p>the only circle that matters</p>
     </header>
 
     <div class="quote-box">
@@ -122,32 +108,27 @@
     </div>
 
     <div class="photo-list">
-        <div class="polaroid">
-            <img src="foto 1.jpg">
-            <p class="caption">the beginning.</p>
-        </div>
-        <div class="polaroid">
-            <img src="foto 2.jpg">
-            <p class="caption">best team ❤️</p>
-        </div>
-        <div class="polaroid">
-            <img src="foto 3.jpg">
-            <p class="caption">no drama.</p>
-        </div>
-        <div class="polaroid">
-            <img src="foto 4.jpg">
-            <p class="caption">together vibes.</p>
-        </div>
+        <div class="polaroid"><img src="foto 1.jpg"><p class="caption">memory 01</p></div>
+        <div class="polaroid"><img src="foto 2.jpg"><p class="caption">best team ❤️</p></div>
+        <div class="polaroid"><img src="foto 3.jpg"><p class="caption">no drama.</p></div>
+        <div class="polaroid"><img src="foto 4.jpg"><p class="caption">together vibes.</p></div>
+        <div class="polaroid"><img src="foto 5.jpg"><p class="caption">solidaritas ✨</p></div>
+        <div class="polaroid"><img src="foto 6.jpg"><p class="polaroid-img"><img src="foto 6.jpg"><p class="caption">momen berharga</p></div>
+        <div class="polaroid"><img src="foto 7.jpg"><p class="caption">slay 💅</p></div>
+        <div class="polaroid"><img src="foto 8.jpg"><p class="caption">happy day!</p></div>
+        <div class="polaroid"><img src="foto 9.jpg"><p class="caption">unforgettable</p></div>
+        <div class="polaroid"><img src="foto 10.jpg"><p class="caption">support system</p></div>
+        <div class="polaroid"><img src="foto 11.jpg"><p class="caption">forever.</p></div>
     </div>
 
     <footer>
         four girls💅💞 • 2026<br>
-        <i>Together is our favorite place.</i>
+        Scroll up to remember.
     </footer>
 </div>
 
 <script>
-    // Bikin bintang gerak secara otomatis
+    // Bintang Background
     const starField = document.getElementById('starField');
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
@@ -155,29 +136,30 @@
         star.style.left = Math.random() * 100 + '%';
         star.style.top = Math.random() * 100 + '%';
         star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        star.style.width = Math.random() * 3 + 'px';
+        star.style.width = Math.random() * 2 + 'px';
         star.style.height = star.style.width;
         starField.appendChild(star);
     }
 
+    // AUTO PLAY ON SCROLL / TOUCH
     const audio = document.getElementById("mainAudio");
-    const mStatus = document.getElementById("m-status");
-    const mIcon = document.getElementById("m-icon");
-    const eq = document.getElementById("eq");
+    const musicStatus = document.getElementById("musicStatus");
+    let isPlaying = false;
 
-    function toggleMusic() {
-        if (audio.paused) {
-            audio.play().catch(e => console.log("Gagal putar:", e));
-            mStatus.innerText = "Playing: Hindia ✨";
-            mIcon.innerText = "⏸️";
-            eq.classList.remove("paused");
-        } else {
-            audio.pause();
-            mStatus.innerText = "Music Paused";
-            mIcon.innerText = "▶️";
-            eq.classList.add("paused");
+    function startMusic() {
+        if (!isPlaying) {
+            audio.play().then(() => {
+                isPlaying = true;
+                musicStatus.style.opacity = "0"; // Hilangkan notif pas musik jalan
+                setTimeout(() => musicStatus.style.display = "none", 500);
+            }).catch(e => console.log("Menunggu interaksi..."));
         }
     }
+
+    // Trigger pas scroll, klik, atau sentuh layar
+    window.addEventListener('scroll', startMusic);
+    window.addEventListener('click', startMusic);
+    window.addEventListener('touchstart', startMusic);
 </script>
 
 </body>
