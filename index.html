@@ -3,157 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>four girls💅💞 | Together Forever</title>
+    <title>four girls💅💞 | Forever</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Reenie+Beanie&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body { 
-            background: #000; 
-            overflow: hidden; 
-            color: #fff;
+            background: #000; overflow: hidden; color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* BACKGROUND BINTANG */
-        .stars-bg {
+        .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
+
+        /* IKON PESAN DI POJOK KANAN ATAS */
+        .message-icon {
+            position: fixed; top: 25px; right: 25px; z-index: 200;
+            cursor: pointer; background: rgba(255,255,255,0.1);
+            padding: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 15px rgba(255,118,117,0.3);
+            transition: 0.4s;
+        }
+        .message-icon:hover { transform: scale(1.1) rotate(10deg); background: rgba(255,118,117,0.4); }
+
+        /* OVERLAY PESAN RAHASIA */
+        .overlay-msg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            background: rgba(0,0,0,0.95); z-index: 300;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; text-align: center; backdrop-filter: blur(10px);
+        }
+        .overlay-msg.active { display: flex; }
+        .close-btn { position: absolute; top: 40px; cursor: pointer; font-size: 0.7rem; letter-spacing: 4px; color: #ff7675; }
+        
+        .secret-content { 
+            font-family: 'Reenie Beanie', cursive; 
+            font-size: 2.2rem; 
+            line-height: 1.4; 
+            max-width: 500px; 
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,182,193,0.5);
         }
 
-        header {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        header h1 {
-            font-size: 2.5rem;
-            letter-spacing: -1px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.4);
-        }
+        /* HEADER & MARQUEE IKLAN */
+        header { margin-bottom: 20px; z-index: 5; text-align: center; }
+        header h1 { font-size: 2.5rem; letter-spacing: -1px; font-weight: 600; }
 
-        /* INFINITE MARQUEE (IKLAN JALAN) */
         .marquee-container {
-            width: 100vw;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 50px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
+            width: 100vw; overflow: hidden; display: flex;
+            background: rgba(255, 255, 255, 0.02); padding: 50px 0;
+            border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+        .marquee-content { display: flex; gap: 40px; animation: scroll-loop 40s linear infinite; width: max-content; }
+        
+        .ad-frame { 
+            width: 300px; flex-shrink: 0; background: #fff; padding: 15px 15px 45px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7); transform: rotate(-1.5deg); 
+        }
+        .ad-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 15px; }
+        .wish-text { font-family: 'Reenie Beanie', cursive; color: #111; font-size: 1.8rem; text-align: center; }
 
-        .marquee-content {
-            display: flex;
-            gap: 40px;
-            animation: scroll-loop 35s linear infinite; /* Kecepatan jalan */
-            width: max-content;
-        }
+        @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .ad-frame {
-            width: 300px;
-            flex-shrink: 0;
-            background: #fff;
-            padding: 15px 15px 35px; /* Kasih space bawah buat kata-kata */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transform: rotate(-1deg);
-        }
-
-        .ad-frame img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
-
-        /* KATA-KATA HARAPAN */
-        .wish-text {
-            font-family: 'Reenie Beanie', cursive;
-            color: #2d3436;
-            font-size: 1.6rem;
-            text-align: center;
-            line-height: 1;
-        }
-
-        @keyframes scroll-loop {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .tap-notif {
-            position: fixed;
-            bottom: 40px;
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            color: #ff7675;
-            text-transform: uppercase;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
+        #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
     </style>
 </head>
 <body>
 
 <div class="stars-bg"></div>
 
+<div class="message-icon" onclick="toggleMessage()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+</div>
+
+<div class="overlay-msg" id="msgOverlay">
+    <div class="secret-content">
+        Jagalah persahabatan kalian sampai dewasa nanti, sampai kapanpun itu. <br><br>
+        Jangan sampai persahabatan ini hancur cuma karena ego atau hal-hal sepele. Jaga baik-baik ikatan yang udah kita punya sekarang ya. <br><br>
+        Raisya, Syifa, Diva, Tasya... <br>
+        Tetap bareng-bareng terus, sukses bareng-bareng, dan jangan pernah berubah. <br>
+        Kalian berempat berharga banget! 💞✨
+    </div>
+    <div class="close-btn" onclick="toggleMessage()" style="margin-top: 50px;">[ CLOSE MESSAGE ]</div>
+</div>
+
 <header>
     <h1>four girls💅💞</h1>
 </header>
 
-<div class="marquee-container" id="mainContainer">
+<div class="marquee-container">
     <div class="marquee-content" id="track">
-        <div class="ad-frame"><img src="foto 1.jpg"><p class="wish-text">Semoga cita-cita kita tercapai</p></div>
-        <div class="ad-frame"><img src="foto 2.jpg"><p class="wish-text">Sehat selalu ya kita berempat</p></div>
-        <div class="ad-frame"><img src="foto 3.jpg"><p class="wish-text">Semoga sukses bareng-bareng</p></div>
-        <div class="ad-frame"><img src="foto 4.jpg"><p class="wish-text">Jangan pernah berubah ya!</p></div>
-        <div class="ad-frame"><img src="foto 5.jpg"><p class="wish-text">Support system terbaik</p></div>
-        <div class="ad-frame"><img src="foto 6.jpg"><p class="wish-text">Lancar terus rezekinya</p></div>
-        <div class="ad-frame"><img src="foto 7.jpg"><p class="wish-text">Bahagia terus pokoknya!</p></div>
-        <div class="ad-frame"><img src="foto 8.jpg"><p class="wish-text">Stay classy, stay slay 💅</p></div>
-        <div class="ad-frame"><img src="foto 9.jpg"><p class="wish-text">Kawal sampai jadi orang sukses</p></div>
-        <div class="ad-frame"><img src="foto 10.jpg"><p class="wish-text">Banggain orang tua kita</p></div>
-        <div class="ad-frame"><img src="foto 11.jpg"><p class="wish-text">Together forever, girlies 💞</p></div>
+        <div class="ad-frame"><img src="foto 1.jpg"><p class="wish-text">Besties Forever</p></div>
+        <div class="ad-frame"><img src="foto 2.jpg"><p class="wish-text">Akrab terus ya!</p></div>
+        <div class="ad-frame"><img src="foto 3.jpg"><p class="wish-text">Jangan sampai pisah</p></div>
+        <div class="ad-frame"><img src="foto 4.jpg"><p class="wish-text">Sukses bareng ✨</p></div>
+        <div class="ad-frame"><img src="foto 5.jpg"><p class="wish-text">Our core memory</p></div>
+        <div class="ad-frame"><img src="foto 6.jpg"><p class="wish-text">Stay slay, girls 💅</p></div>
+        <div class="ad-frame"><img src="foto 7.jpg"><p class="wish-text">Support system</p></div>
+        <div class="ad-frame"><img src="foto 8.jpg"><p class="wish-text">Sehat selalu kita</p></div>
+        <div class="ad-frame"><img src="foto 9.jpg"><p class="wish-text">No drama, just love</p></div>
+        <div class="ad-frame"><img src="foto 10.jpg"><p class="wish-text">Kawal sampe sukses</p></div>
+        <div class="ad-frame"><img src="foto 11.jpg"><p class="wish-text">Together till end 💞</p></div>
     </div>
 </div>
 
-<div class="tap-notif" id="tapText">TAP ANYWHERE FOR MUSIC 🔊</div>
+<p id="tapText">TAP ANYWHERE TO PLAY VIBE 🔊</p>
 
-<audio id="bgMusic" loop>
-    <source src="hindia.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // Duplicate buat loop tanpa putus
+    // Duplicate photos for smooth infinite loop
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
-    // Audio Autoplay logic
-    const audio = document.getElementById('bgMusic');
-    const tapText = document.getElementById('tapText');
-    let hasPlayed = false;
-
-    function playMusic() {
-        if (!hasPlayed) {
-            audio.play().then(() => {
-                hasPlayed = true;
-                tapText.innerText = "HINDIA - PLAYING ✨";
-                tapText.style.animation = "none";
-            });
-        }
+    function toggleMessage() {
+        document.getElementById('msgOverlay').classList.toggle('active');
     }
 
-    document.addEventListener('click', playMusic);
-    document.addEventListener('touchstart', playMusic);
+    // Audio Autoplay logic
+    let isMusicPlaying = false;
+    document.addEventListener('click', () => {
+        if(!isMusicPlaying) {
+            document.getElementById('bgMusic').play();
+            document.getElementById('tapText').style.opacity = "0";
+            isMusicPlaying = true;
+        }
+    });
 </script>
 
 </body>
