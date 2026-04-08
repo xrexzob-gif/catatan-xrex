@@ -3,220 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>four girls💅💞 | forever.</title>
+    <title>four girls💅💞 | Together Forever</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Reenie+Beanie&family=Space+Grotesk:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Reenie+Beanie&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
-            background: #000; overflow-x: hidden; color: #fff;
+            background: #000; 
+            overflow: hidden; 
+            color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            display: flex; justify-content: center; min-height: 100vh;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* ANIMASI BINTANG BACKGROUND */
-        .stars-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        /* BACKGROUND BINTANG */
+        .stars-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
         }
-        .star {
-            position: absolute; background: white; border-radius: 50%;
-            opacity: 0.6; animation: moveStars linear infinite;
+
+        header {
+            margin-bottom: 40px;
+            text-align: center;
         }
-        @keyframes moveStars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1000px); }
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4);
         }
 
-        .container {
-            width: 100%; max-width: 450px;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(15px);
-            min-height: 100vh; padding-bottom: 50px;
-            border-left: 1px solid rgba(255,255,255,0.1);
-            border-right: 1px solid rgba(255,255,255,0.1);
+        /* INFINITE MARQUEE (IKLAN JALAN) */
+        .marquee-container {
+            width: 100vw;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 50px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
         }
 
-        /* FLOATING MUSIC INDICATOR */
-        .music-notif {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 118, 117, 0.9); padding: 12px 24px;
-            border-radius: 50px; font-size: 0.75rem; font-weight: 600;
-            z-index: 999; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 5px 20px rgba(255, 118, 117, 0.5);
-            transition: 0.5s; opacity: 1;
+        .marquee-content {
+            display: flex;
+            gap: 40px;
+            animation: scroll-loop 35s linear infinite; /* Kecepatan jalan */
+            width: max-content;
         }
 
-        header { padding: 90px 20px 40px; text-align: center; }
-        header h1 { font-weight: 600; font-size: 2.5rem; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3); letter-spacing: -1px;}
-        header p { font-size: 0.7rem; color: #bbb; text-transform: uppercase; letter-spacing: 4px; margin-top: 10px; }
-
-        .quote-box {
-            margin: 0 30px 60px; padding: 25px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px; text-align: center;
-            border: 1px dashed rgba(255, 118, 117, 0.4);
-        }
-        .quote-box p { font-size: 0.95rem; font-style: italic; color: #eee; line-height: 1.6; }
-
-        /* THE PILLARS (Daftar Nama Eksklusif) */
-        .pillars-section { margin-bottom: 70px; padding: 0 30px; }
-        .pillars-title { font-size: 0.8rem; color: #ffb6c1; text-transform: uppercase; letter-spacing: 3px; text-align: center; margin-bottom: 30px; }
-        
-        .pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .pillar-item { 
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px; border-radius: 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative; overflow: hidden;
-            transition: 0.4s;
-        }
-        .pillar-item:hover { transform: translateY(-5px); border-color: rgba(255,118,117,0.3); }
-
-        /* Efek Glow Motif di Nama */
-        .pillar-name { 
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 500; color: #fff; 
-            margin-bottom: 5px; position: relative; z-index: 1;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-        .pillar-name::after {
-            content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
-            width: 40px; height: 3px; background: linear-gradient(90deg, #ff7675, #fab1a0);
-            border-radius: 10px;
-        }
-        
-        .pillar-avatar {
-            width: 50px; height: 50px; border-radius: 50%; 
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px; font-weight: 600; color: #fff; font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(255,118,117,0.3);
+        .ad-frame {
+            width: 300px;
+            flex-shrink: 0;
+            background: #fff;
+            padding: 15px 15px 35px; /* Kasih space bawah buat kata-kata */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transform: rotate(-1deg);
         }
 
-        /* POLAROID GALLERY */
-        .photo-list { padding: 0 30px; }
-        .polaroid {
-            background: white; padding: 15px 15px 50px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            margin-bottom: 55px; transition: 0.5s;
-        }
-        /* Variasi rotasi foto biar natural */
-        .polaroid:nth-child(3n+1) { transform: rotate(-2.5deg); }
-        .polaroid:nth-child(3n+2) { transform: rotate(2.5deg); }
-        .polaroid:nth-child(3n+3) { transform: rotate(-1.5deg); }
-        
-        .polaroid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 25px; border: 1px solid #eee; }
-        .polaroid .caption {
-            font-family: 'Reenie Beanie', cursive; font-size: 2rem;
-            color: #2d3436; text-align: center;
+        .ad-frame img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            margin-bottom: 15px;
         }
 
-        footer { text-align: center; padding: 60px 40px; color: #666; font-size: 0.75rem; letter-spacing: 1px; }
+        /* KATA-KATA HARAPAN */
+        .wish-text {
+            font-family: 'Reenie Beanie', cursive;
+            color: #2d3436;
+            font-size: 1.6rem;
+            text-align: center;
+            line-height: 1;
+        }
 
-        /* EQUALIZER */
-        .eq { display: flex; align-items: flex-end; gap: 3px; height: 14px; }
-        .bar { width: 2px; background: white; animation: bounce 0.6s infinite alternate; }
-        @keyframes bounce { from { height: 3px; } to { height: 14px; } }
+        @keyframes scroll-loop {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .tap-notif {
+            position: fixed;
+            bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #ff7675;
+            text-transform: uppercase;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
     </style>
 </head>
 <body>
 
-<div class="stars-container" id="starField"></div>
+<div class="stars-bg"></div>
 
-<div class="music-notif" id="musicStatus">
-    <div class="eq"><div class="bar"></div><div class="bar" style="animation-delay:0.2s"></div><div class="bar" style="animation-delay:0.4s"></div></div>
-    <span>SCROLL UNTUK MUSIK HINDIA ✨</span>
+<header>
+    <h1>four girls💅💞</h1>
+</header>
+
+<div class="marquee-container" id="mainContainer">
+    <div class="marquee-content" id="track">
+        <div class="ad-frame"><img src="foto 1.jpg"><p class="wish-text">Semoga cita-cita kita tercapai</p></div>
+        <div class="ad-frame"><img src="foto 2.jpg"><p class="wish-text">Sehat selalu ya kita berempat</p></div>
+        <div class="ad-frame"><img src="foto 3.jpg"><p class="wish-text">Semoga sukses bareng-bareng</p></div>
+        <div class="ad-frame"><img src="foto 4.jpg"><p class="wish-text">Jangan pernah berubah ya!</p></div>
+        <div class="ad-frame"><img src="foto 5.jpg"><p class="wish-text">Support system terbaik</p></div>
+        <div class="ad-frame"><img src="foto 6.jpg"><p class="wish-text">Lancar terus rezekinya</p></div>
+        <div class="ad-frame"><img src="foto 7.jpg"><p class="wish-text">Bahagia terus pokoknya!</p></div>
+        <div class="ad-frame"><img src="foto 8.jpg"><p class="wish-text">Stay classy, stay slay 💅</p></div>
+        <div class="ad-frame"><img src="foto 9.jpg"><p class="wish-text">Kawal sampai jadi orang sukses</p></div>
+        <div class="ad-frame"><img src="foto 10.jpg"><p class="wish-text">Banggain orang tua kita</p></div>
+        <div class="ad-frame"><img src="foto 11.jpg"><p class="wish-text">Together forever, girlies 💞</p></div>
+    </div>
 </div>
 
-<div class="container">
-    <audio id="mainAudio" loop>
-        <source src="hindia.mp3" type="audio/mpeg">
-    </audio>
+<div class="tap-notif" id="tapText">TAP ANYWHERE FOR MUSIC 🔊</div>
 
-    <header>
-        <h1>four girls💅💞</h1>
-        <p>the pillars of friendship</p>
-    </header>
-
-    <div class="quote-box">
-        <p>"bismillah rencana terlaksana 🥰🥰🥰💅"</p>
-    </div>
-
-    <div class="pillars-section">
-        <h2 class="pillars-title">our core</h2>
-        <div class="pillar-grid">
-            <div class="pillar-item">
-                <div class="pillar-avatar">R</div>
-                <div class="pillar-name">Raisya</div>
-            </div>
-            <div class="pillar-item">
-                <div class="pillar-avatar" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">S</div>
-                <div class="pillar-name">Syifa</div>
-            </div>
-            <div class="pillar-item">
-                <div class="pillar-avatar" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">D</div>
-                <div class="pillar-name">Diva</div>
-            </div>
-            <div class="pillar-item">
-                <div class="pillar-avatar" style="background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);">T</div>
-                <div class="pillar-name">Tasya</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="photo-list">
-        <div class="polaroid"><img src="foto 1.jpg"><p class="caption">memory 01</p></div>
-        <div class="polaroid"><img src="foto 2.jpg"><p class="caption">just being us.</p></div>
-        <div class="polaroid"><img src="foto 3.jpg"><p class="caption">rencana kita ✨</p></div>
-        <div class="polaroid"><img src="foto 4.jpg"><p class="caption">no drama.</p></div>
-        <div class="polaroid"><img src="foto 5.jpg"><p class="caption">solidaritas ❤️</p></div>
-        <div class="polaroid"><img src="foto 6.jpg"><p class="caption">slay 💅</p></div>
-        <div class="polaroid"><img src="foto 7.jpg"><p class="caption">best team.</p></div>
-        <div class="polaroid"><img src="foto 8.jpg"><p class="caption">happy day!</p></div>
-        <div class="polaroid"><img src="foto 9.jpg"><p class="caption">support system</p></div>
-        <div class="polaroid"><img src="foto 10.jpg"><p class="caption">unforgettable</p></div>
-        <div class="polaroid"><img src="foto 11.jpg"><p class="caption">forever.</p></div>
-    </div>
-
-    <footer>
-        four girls💅💞 • 2026<br>
-        Scroll up to remember.
-    </footer>
-</div>
+<audio id="bgMusic" loop>
+    <source src="hindia.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-    // Bintang Background (Pro)
-    const starField = document.getElementById('starField');
-    for (let i = 0; i < 150; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDuration = (Math.random() * 4 + 2) + 's';
-        star.style.width = Math.random() * 2.5 + 'px';
-        star.style.height = star.style.width;
-        starField.appendChild(star);
-    }
+    // Duplicate buat loop tanpa putus
+    const track = document.getElementById('track');
+    track.innerHTML += track.innerHTML;
 
-    // AUTO PLAY ON SCROLL / TOUCH (Hindia)
-    const audio = document.getElementById("mainAudio");
-    const musicStatus = document.getElementById("musicStatus");
-    let isPlaying = false;
+    // Audio Autoplay logic
+    const audio = document.getElementById('bgMusic');
+    const tapText = document.getElementById('tapText');
+    let hasPlayed = false;
 
-    function startMusic() {
-        if (!isPlaying) {
+    function playMusic() {
+        if (!hasPlayed) {
             audio.play().then(() => {
-                isPlaying = true;
-                musicStatus.style.opacity = "0"; // Hilangkan notif pas musik jalan
-                setTimeout(() => musicStatus.style.display = "none", 500);
-            }).catch(e => console.log("Menunggu interaksi..."));
+                hasPlayed = true;
+                tapText.innerText = "HINDIA - PLAYING ✨";
+                tapText.style.animation = "none";
+            });
         }
     }
 
-    // Trigger pas scroll, klik, atau sentuh layar
-    window.addEventListener('scroll', startMusic);
-    window.addEventListener('click', startMusic);
-    window.addEventListener('touchstart', startMusic);
+    document.addEventListener('click', playMusic);
+    document.addEventListener('touchstart', playMusic);
 </script>
 
 </body>
