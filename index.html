@@ -1,248 +1,150 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Cerita Kita ❤️</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>four girls💅💞 | forever.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Reenie+Beanie&display=swap');
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    overflow: hidden;
-    background: linear-gradient(to right, #ff758c, #ff7eb3);
-    color: white;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: #f8f9fa;
+            background-image: url("https://www.transparenttextures.com/patterns/cream-pixels.png"); /* Efek kertas halus */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex; justify-content: center; min-height: 100vh;
+            color: #2d3436;
+        }
 
-.slider {
-    display: flex;
-    width: 1000%;
-    height: 100vh;
-    transition: 0.6s;
-}
+        .container {
+            width: 100%; max-width: 450px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            min-height: 100vh; padding-bottom: 50px;
+        }
 
-.slide {
-    width: 100%;
-    flex-shrink: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    height: 100vh;
-    overflow-y: auto; /* 🔥 FIX SCROLL */
-}
+        /* Music Bar Floated */
+        .music-player {
+            position: sticky; top: 15px; z-index: 100;
+            background: white; width: 90%; margin: 0 auto;
+            padding: 12px 20px; border-radius: 50px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            cursor: pointer; border: 1px solid #f1f1f1;
+        }
+        .music-text { font-size: 0.8rem; font-weight: 600; color: #fab1a0; }
 
-h1 {
-    text-align: center;
-}
+        header { padding: 60px 20px 40px; text-align: center; }
+        header h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; letter-spacing: -1px; font-size: 2.2rem; color: #ff7675; }
+        header p { font-size: 0.8rem; color: #b2bec3; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; }
 
-p {
-    max-width: 700px;
-    margin: auto;
-    line-height: 1.9;
-    text-align: justify;
-    font-size: 1.1em;
-}
+        .mission-box {
+            margin: 0 25px 50px; padding: 20px;
+            background: #fff; border-radius: 15px;
+            text-align: center; border: 1px dashed #fab1a0;
+        }
+        .mission-box p { font-size: 0.9rem; font-style: italic; color: #636e72; }
 
-.nav {
-    position: fixed;
-    bottom: 15px;
-    width: 100%;
-    text-align: center;
-}
+        /* Polaroid Style */
+        .polaroid-wrapper { padding: 0 25px; }
+        .polaroid {
+            background: white; padding: 15px 15px 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 40px; transform: rotate(-1deg);
+            transition: 0.3s ease;
+        }
+        .polaroid:nth-child(even) { transform: rotate(1.5deg); }
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); z-index: 10; }
+        
+        .polaroid img { 
+            width: 100%; aspect-ratio: 1/1; object-fit: cover; 
+            filter: contrast(1.05) brightness(1.02);
+            margin-bottom: 20px;
+        }
+        .polaroid .caption {
+            font-family: 'Reenie Beanie', cursive; /* Font tulisan tangan */
+            font-size: 1.6rem; color: #2d3436; text-align: center;
+        }
 
-button {
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: none;
-    margin: 5px;
-}
-</style>
+        footer { text-align: center; padding: 40px; color: #b2bec3; font-size: 0.7rem; }
+
+        /* Equalizer Animation */
+        .eq { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+        .bar { width: 2px; background: #fab1a0; animation: play 0.6s infinite alternate; }
+        .paused .bar { animation-play-state: paused; height: 2px; }
+        @keyframes play { from { height: 2px; } to { height: 12px; } }
+    </style>
 </head>
-
 <body>
 
-<div class="slider" id="slider">
+<div class="container">
+    <audio id="mainAudio" loop>
+        <source src="Hindia - everything u are Lirik Lagu.mp3" type="audio/mpeg">
+    </audio>
 
-<div class="slide">
-<h1>Cerita Kita ❤️</h1>
-<p>
-Semua ini dimulai dari hal yang nggak pernah kita rencanakan.
-Dari dua orang asing yang akhirnya jadi saling kenal.
-Awalnya cuma ngobrol biasa, tanpa rasa, tanpa beban.
+    <div class="music-player" onclick="toggleMusic()">
+        <div class="eq paused" id="eq">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+        </div>
+        <span class="music-text" id="m-status">Tap to Play Hindia</span>
+    </div>
 
-Tapi lama-lama berubah jadi kebiasaan.
-Mulai nunggu kabar, mulai peduli hal kecil,
-dan mulai merasa ada yang kurang kalau nggak ada kamu.
+    <header>
+        <h1>four girls💅💞</h1>
+        <p>A Lifetime Journey</p>
+    </header>
 
-Hari-hari yang dulu biasa aja,
-pelan-pelan jadi punya arti.
-Dan tanpa kita sadari,
-kita jadi bagian penting satu sama lain.
-</p>
-</div>
+    <div class="mission-box">
+        <p>"bismillah rencana terlaksana 🥰🥰🥰💅"</p>
+        <small style="display:block; margin-top:10px; color:#dfe6e9; font-size:0.6rem;">Est. 06.02.26</small>
+    </div>
 
-<div class="slide">
-<h1>Mulai Nyaman</h1>
-<p>
-Di fase ini semuanya terasa hangat.
-Kita ketawa bareng, cerita panjang,
-dan ngerasa dunia baik-baik aja.
+    <div class="polaroid-wrapper">
+        <div class="polaroid">
+            <img src="foto 1.jpg" alt="Memory">
+            <p class="caption">just being us.</p>
+        </div>
 
-Kamu jadi tempat pulang,
-tempat cerita,
-dan tempat ternyaman.
+        <div class="polaroid">
+            <img src="foto 2.jpg" alt="Memory">
+            <p class="caption">the best team ❤️</p>
+        </div>
 
-Dan di sini aku mulai sadar,
-aku nggak bisa lagi nganggep kamu sebagai orang biasa.
-</p>
-</div>
+        <div class="polaroid">
+            <img src="foto 3.jpg" alt="Memory">
+            <p class="caption">rencana kita ✨</p>
+        </div>
 
-<div class="slide">
-<h1>Mulai Berubah</h1>
-<p>
-Seiring waktu, kita mulai berubah.
-Mulai ada perbedaan,
-mulai ada ego.
+        <div class="polaroid">
+            <img src="foto 4.jpg" alt="Memory">
+            <p class="caption">forever vibes.</p>
+        </div>
+    </div>
 
-Hal kecil jadi besar,
-dan kita mulai saling nyakitin tanpa sadar.
-
-Di sini kita mulai diuji,
-apakah kita tetap bertahan,
-atau malah menyerah.
-</p>
-</div>
-
-<div class="slide">
-<h1>Ribut 💔</h1>
-<p>
-Kita pernah ribut besar.
-Ngomong tanpa mikir,
-saling nyalahin,
-dan sama-sama keras kepala.
-
-Kata-kata jadi tajam,
-dan kita sama-sama terluka.
-
-Di titik ini,
-hubungan kita hampir hancur.
-</p>
-</div>
-
-<div class="slide">
-<h1>Diam</h1>
-<p>
-Kita saling diam.
-Nggak ada kabar,
-nggak ada perhatian.
-
-Padahal dulu nggak bisa sehari tanpa ngobrol.
-Sekarang malah jadi asing.
-
-Dan itu rasanya…
-kosong banget.
-</p>
-</div>
-
-<div class="slide">
-<h1>Masih Peduli</h1>
-<p>
-Walaupun kita diam,
-kita masih peduli.
-
-Masih mikirin,
-masih kangen,
-dan masih berharap.
-
-Dan mungkin itu yang bikin kita nggak benar-benar pergi.
-</p>
-</div>
-
-<div class="slide">
-<h1>Balik Lagi ❤️</h1>
-<p>
-Akhirnya kita ngobrol lagi.
-Pelan-pelan.
-
-Nggak langsung seperti dulu,
-tapi cukup untuk mulai lagi.
-
-Dan di situ kita sadar,
-kita masih butuh satu sama lain.
-</p>
-</div>
-
-<div class="slide">
-<h1>Belajar</h1>
-<p>
-Kita mulai belajar.
-Belajar ngerti,
-belajar sabar,
-dan belajar bertahan.
-
-Walaupun sering gagal,
-tapi kita tetap mencoba.
-</p>
-</div>
-
-<div class="slide">
-<h1>Tetap</h1>
-<p>
-Kita masih di sini.
-Masih bareng.
-
-Walaupun nggak sempurna,
-walaupun sering ribut,
-tapi kita tetap bertahan.
-
-Dan itu yang bikin semuanya berarti.
-</p>
-</div>
-
-<div class="slide">
-<h1>Akhirnya ❤️</h1>
-<p>
-Dari semua yang kita lewati,
-kita sampai di sini.
-
-Bukan karena semuanya mudah,
-tapi karena kita memilih untuk tetap bersama.
-
-Dan semoga,
-kita terus jalan bareng,
-sejauh mungkin.
-
-Karena ini…
-adalah cerita kita.
-</p>
-</div>
-
-</div>
-
-<div class="nav">
-<button onclick="prev()">◀</button>
-<button onclick="next()">▶</button>
+    <footer>
+        four girls💅💞 • 2026<br>
+        no drama, just love.
+    </footer>
 </div>
 
 <script>
-let index = 0;
+    const audio = document.getElementById("mainAudio");
+    const mStatus = document.getElementById("m-status");
+    const eq = document.getElementById("eq");
 
-function updateSlide(){
-document.getElementById("slider").style.transform =
-"translateX(-"+(index*100)+"%)";
-}
-
-function next(){ if(index<9){index++; updateSlide();}}
-function prev(){ if(index>0){index--; updateSlide();}}
-</script>
-
-<!-- MUSIK -->
-<audio id="music" loop>
-    <source src="Hindia - everything u are Lirik Lagu.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-document.body.addEventListener("click", function(){
-    document.getElementById("music").play();
-});
+    function toggleMusic() {
+        if (audio.paused) {
+            audio.play();
+            mStatus.innerText = "Playing: Everything U Are";
+            eq.classList.remove("paused");
+        } else {
+            audio.pause();
+            mStatus.innerText = "Music Paused";
+            eq.classList.add("paused");
+        }
+    }
 </script>
 
 </body>
