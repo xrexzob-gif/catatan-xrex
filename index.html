@@ -8,47 +8,50 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Reenie+Beanie&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #000; overflow: hidden; color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-
-        .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
-
-        /* IKON PESAN DI POJOK KANAN ATAS */
-        .message-icon {
-            position: fixed; top: 25px; right: 25px; z-index: 200;
-            cursor: pointer; background: rgba(255,255,255,0.1);
-            padding: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 15px rgba(255,118,117,0.3);
-            transition: 0.4s;
-        }
-        .message-icon:hover { transform: scale(1.1) rotate(10deg); background: rgba(255,118,117,0.4); }
-
-        /* OVERLAY PESAN RAHASIA */
-        .overlay-msg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 300;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; text-align: center; backdrop-filter: blur(10px);
-        }
-        .overlay-msg.active { display: flex; }
-        .close-btn { position: absolute; top: 40px; cursor: pointer; font-size: 0.7rem; letter-spacing: 4px; color: #ff7675; }
         
-        .secret-content { 
-            font-family: 'Reenie Beanie', cursive; 
-            font-size: 2.2rem; 
-            line-height: 1.4; 
-            max-width: 500px; 
+        body { 
+            background: #000; 
+            overflow: hidden; 
             color: #fff;
-            text-shadow: 0 0 10px rgba(255,182,193,0.5);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
         }
 
-        /* HEADER & MARQUEE IKLAN */
-        header { margin-bottom: 20px; z-index: 5; text-align: center; }
-        header h1 { font-size: 2.5rem; letter-spacing: -1px; font-weight: 600; }
+        .stars-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; 
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
+        }
 
+        /* JUDUL GLOWING */
+        header { margin-bottom: 20px; z-index: 5; text-align: center; }
+        header h1 { 
+            font-size: 2.8rem; 
+            letter-spacing: -1px; 
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 182, 193, 0.6), 
+                         0 0 30px rgba(255, 182, 193, 0.4);
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6);
+                transform: scale(1);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8);
+                transform: scale(1.03);
+            }
+        }
+
+        /* MARQUEE FOTO */
         .marquee-container {
             width: 100vw; overflow: hidden; display: flex;
             background: rgba(255, 255, 255, 0.02); padding: 50px 0;
@@ -64,6 +67,28 @@
         .wish-text { font-family: 'Reenie Beanie', cursive; color: #111; font-size: 1.8rem; text-align: center; }
 
         @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* PESAN RAHASIA */
+        .message-icon {
+            position: fixed; top: 25px; right: 25px; z-index: 200;
+            cursor: pointer; background: rgba(255,255,255,0.1);
+            padding: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.4s;
+        }
+        .message-icon:hover { transform: scale(1.1); background: rgba(255,118,117,0.4); }
+
+        .overlay-msg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 300;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; text-align: center; backdrop-filter: blur(10px);
+        }
+        .overlay-msg.active { display: flex; }
+        .secret-content { 
+            font-family: 'Reenie Beanie', cursive; font-size: 2.2rem; line-height: 1.4; 
+            max-width: 500px; color: #fff;
+        }
+        .close-btn { margin-top: 50px; cursor: pointer; font-size: 0.7rem; letter-spacing: 4px; color: #ff7675; }
 
         #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
     </style>
@@ -84,7 +109,7 @@
         Tetap bareng-bareng terus, sukses bareng-bareng, dan jangan pernah berubah. <br>
         Kalian berempat berharga banget! 💞✨
     </div>
-    <div class="close-btn" onclick="toggleMessage()" style="margin-top: 50px;">[ CLOSE MESSAGE ]</div>
+    <div class="close-btn" onclick="toggleMessage()">[ CLOSE MESSAGE ]</div>
 </div>
 
 <header>
@@ -112,7 +137,6 @@
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // Duplicate photos for smooth infinite loop
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
@@ -120,7 +144,6 @@
         document.getElementById('msgOverlay').classList.toggle('active');
     }
 
-    // Audio Autoplay logic
     let isMusicPlaying = false;
     document.addEventListener('click', () => {
         if(!isMusicPlaying) {
