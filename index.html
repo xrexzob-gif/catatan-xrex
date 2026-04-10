@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>four girls💅💞 | Together Forever</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;800&family=Reenie+Beanie&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=Reenie+Beanie&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -27,94 +27,93 @@
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
         }
 
-        /* PESAN BERJALAN */
-        .top-ticker {
+        /* BAGIAN PENCIPTA DI ATAS (DIEM DI TEMPAT, TAPI WARNA GERAK) */
+        .top-static {
             position: fixed; 
             top: 30px; 
             width: 100%; 
-            overflow: hidden;
-            white-space: nowrap;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 0;
+            text-align: center;
+            background: rgba(255, 182, 193, 0.05);
+            padding: 10px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
         }
 
-        .ticker-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker 25s linear infinite;
-        }
-
-        .ticker-content span {
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #fff;
-            padding-right: 80px;
-        }
-
-        /* INI EFEK PELANGI GERAK BUAT NAMA ARIFIN */
-        .arifin-rainbow {
+        .creator-name {
+            font-size: 1.1rem;
             font-weight: 800;
-            background: linear-gradient(to right, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #8000ff, #ff0000);
-            background-size: 200% auto;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            
+            /* EFEK PELANGI GERAK NGALIR (RAINBOW FLOW) */
+            background: linear-gradient(
+                to right, 
+                #ff0000 0%, 
+                #ff7f00 14%, 
+                #ffff00 28%, 
+                #00ff00 42%, 
+                #0000ff 56%, 
+                #4b0082 70%, 
+                #9400d3 84%, 
+                #ff0000 100%
+            );
+            background-size: 200% auto; /* Bikin backgroundnya dobel biar bisa digerakin */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: pelangiGerak 2s linear infinite;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            animation: rainbowEngine 2s linear infinite; /* Pake animasi biar warnanya ngalir */
         }
 
-        @keyframes pelangiGerak {
+        /* Ini mesin penggerak warna pelanginya */
+        @keyframes rainbowEngine {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
 
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+        /* JUDUL GLOWING */
+        header { margin-top: 60px; margin-bottom: 20px; z-index: 5; text-align: center; }
+        header h1 { 
+            font-size: 2.8rem; 
+            letter-spacing: -1px; 
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 182, 193, 0.6), 
+                         0 0 30px rgba(255, 182, 193, 0.4);
+            animation: glowPulse 2s ease-in-out infinite alternate;
         }
 
-        /* JUDUL */
-        header { margin-top: 80px; margin-bottom: 20px; z-index: 5; text-align: center; }
-        header h1 { 
-            font-size: 3rem; 
-            font-weight: 800;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+        @keyframes glowPulse {
+            from { transform: scale(1); text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6); }
+            to { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8); }
         }
 
         /* MARQUEE FOTO */
         .marquee-container {
             width: 100vw; overflow: hidden; display: flex;
-            background: rgba(255, 255, 255, 0.02); padding: 40px 0;
+            background: rgba(255, 255, 255, 0.02); padding: 50px 0;
             border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .marquee-content { display: flex; gap: 40px; animation: scroll-loop 40s linear infinite; width: max-content; }
         
         .ad-frame { 
-            width: 280px; flex-shrink: 0; background: #fff; padding: 15px 15px 40px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: rotate(-1deg); 
+            width: 300px; flex-shrink: 0; background: #fff; padding: 15px 15px 45px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7); transform: rotate(-1.5deg); 
         }
-        .ad-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 10px; }
-        .wish-text { font-family: 'Reenie Beanie', cursive; color: #111; font-size: 1.6rem; text-align: center; }
+        .ad-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 15px; }
+        .wish-text { font-family: 'Reenie Beanie', cursive; color: #111; font-size: 1.8rem; text-align: center; }
 
         @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        #tapText { position: fixed; bottom: 30px; font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
+        #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
     </style>
 </head>
 <body>
 
 <div class="stars-bg"></div>
 
-<div class="top-ticker">
-    <div class="ticker-content" id="ticker">
-        <span>💌 SPECIAL MESSAGE FROM <span class="arifin-rainbow">ARIFIN</span>: "STAY SOLID GIRLS! JANGAN PERNAH BERUBAH!" ✨</span>
-        <span>CREATED BY <span class="arifin-rainbow">ARIFIN</span> ⚡️ RAISYA, SYIFA, DIVA, TASYA... PERSAHABATAN ADALAH HARTA! 💞</span>
-        <span>JANGAN SAMPAI PISAH CUMA KARENA EGO... REGARDS, <span class="arifin-rainbow">ARIFIN</span> 🌸</span>
-        <span>KALIAN BEREMPAT BERHARGA BANGET... TOGETHER TILL THE END! - <span class="arifin-rainbow">ARIFIN</span> 💅</span>
-    </div>
+<div class="top-static">
+    <span class="creator-name">Pencipta: Muhammad Arifin</span>
 </div>
 
 <header>
@@ -127,6 +126,13 @@
         <div class="ad-frame"><img src="foto 2.jpg"><p class="wish-text">Akrab terus ya!</p></div>
         <div class="ad-frame"><img src="foto 3.jpg"><p class="wish-text">Jangan sampai pisah</p></div>
         <div class="ad-frame"><img src="foto 4.jpg"><p class="wish-text">Sukses bareng ✨</p></div>
+        <div class="ad-frame"><img src="foto 5.jpg"><p class="wish-text">Our core memory</p></div>
+        <div class="ad-frame"><img src="foto 6.jpg"><p class="wish-text">Stay slay, girls 💅</p></div>
+        <div class="ad-frame"><img src="foto 7.jpg"><p class="wish-text">Support system</p></div>
+        <div class="ad-frame"><img src="foto 8.jpg"><p class="wish-text">Sehat selalu kita</p></div>
+        <div class="ad-frame"><img src="foto 9.jpg"><p class="wish-text">No drama, just love</p></div>
+        <div class="ad-frame"><img src="foto 10.jpg"><p class="wish-text">Kawal sampe sukses</p></div>
+        <div class="ad-frame"><img src="foto 11.jpg"><p class="wish-text">Together till end 💞</p></div>
     </div>
 </div>
 
@@ -137,9 +143,6 @@
 <script>
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
-
-    const ticker = document.getElementById('ticker');
-    ticker.innerHTML += ticker.innerHTML;
 
     let isMusicPlaying = false;
     document.addEventListener('click', () => {
