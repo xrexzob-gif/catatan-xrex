@@ -21,57 +21,53 @@
             align-items: center;
         }
 
+        /* INTRO OVERLAY */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        #intro-overlay img {
+            width: 200px; /* Ukuran GIF */
+            margin-bottom: 20px;
+        }
+
+        #intro-overlay button {
+            padding: 10px 25px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+
+        #intro-overlay button:hover {
+            background: #fff;
+            color: #000;
+        }
+
         .stars-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -1; 
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
         }
 
-        /* BAGIAN PENCIPTA DI ATAS (DIEM DI TEMPAT, TAPI WARNA GERAK) */
-        .top-static {
-            position: fixed; 
-            top: 30px; 
-            width: 100%; 
-            text-align: center;
-            background: rgba(255, 182, 193, 0.05);
-            padding: 10px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 10;
-        }
-
-        .creator-name {
-            font-size: 1.1rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            
-            /* EFEK PELANGI GERAK NGALIR (RAINBOW FLOW) */
-            background: linear-gradient(
-                to right, 
-                #ff0000 0%, 
-                #ff7f00 14%, 
-                #ffff00 28%, 
-                #00ff00 42%, 
-                #0000ff 56%, 
-                #4b0082 70%, 
-                #9400d3 84%, 
-                #ff0000 100%
-            );
-            background-size: 200% auto; /* Bikin backgroundnya dobel biar bisa digerakin */
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbowEngine 2s linear infinite; /* Pake animasi biar warnanya ngalir */
-        }
-
-        /* Ini mesin penggerak warna pelanginya */
-        @keyframes rainbowEngine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
         /* JUDUL GLOWING */
-        header { margin-top: 60px; margin-bottom: 20px; z-index: 5; text-align: center; }
+        header { margin-top: 20px; margin-bottom: 20px; z-index: 5; text-align: center; }
         header h1 { 
             font-size: 2.8rem; 
             letter-spacing: -1px; 
@@ -110,11 +106,12 @@
 </head>
 <body>
 
-<div class="stars-bg"></div>
-
-<div class="top-static">
-    <span class="creator-name">Pencipta: Muhammad Arifin</span>
+<div id="intro-overlay">
+    <img src="3.gif" alt="Intro Gif">
+    <button onclick="startApp()">CLICK TO OPEN</button>
 </div>
+
+<div class="stars-bg"></div>
 
 <header>
     <h1>four girls💅💞</h1>
@@ -136,7 +133,7 @@
     </div>
 </div>
 
-<p id="tapText">TAP ANYWHERE TO PLAY MUSIC 🔊</p>
+<p id="tapText">MUSIC IS PLAYING 🔊</p>
 
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
@@ -144,14 +141,21 @@
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
-    let isMusicPlaying = false;
-    document.addEventListener('click', () => {
-        if(!isMusicPlaying) {
-            document.getElementById('bgMusic').play();
-            document.getElementById('tapText').style.opacity = "0";
-            isMusicPlaying = true;
-        }
-    });
+    function startApp() {
+        // Putar musik
+        const music = document.getElementById('bgMusic');
+        music.play();
+        
+        // Sembunyikan intro
+        const intro = document.getElementById('intro-overlay');
+        intro.style.opacity = "0";
+        setTimeout(() => {
+            intro.style.display = "none";
+        }, 800);
+
+        // Update teks bawah
+        document.getElementById('tapText').style.opacity = "0.4";
+    }
 </script>
 
 </body>
