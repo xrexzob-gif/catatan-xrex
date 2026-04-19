@@ -21,7 +21,7 @@
             align-items: center;
         }
 
-        /* INTRO CANVAS DRAWING DENGAN ANIMASI SUKSES */
+        /* INTRO SPEECH OVERLAY */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -32,58 +32,42 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: transform 1s ease-in-out, opacity 1s ease-in-out, background 0.5s ease;
-            touch-action: none; /* Mencegah scroll saat menggambar */
-        }
-
-        /* Animasi Zoom Out & Fade Out saat sukses */
-        #intro-overlay.success {
-            transform: scale(1.5); /* Efek membesar pelan-pelan */
-            opacity: 0;
-            background: rgba(255, 182, 193, 0.2); /* Latar belakang merona pink */
-            pointer-events: none; /* Klik tembus ke web utama */
-        }
-
-        #draw-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            cursor: crosshair;
-        }
-
-        #intro-content {
-            position: relative;
-            z-index: 10000;
-            pointer-events: none; /* Klik tembus ke canvas di bawahnya */
+            transition: opacity 0.8s ease, transform 0.8s ease;
             text-align: center;
-            transition: opacity 0.5s ease;
+            cursor: pointer;
         }
 
-        /* Hilangkan konten tulisan saat sukses */
-        #intro-overlay.success #intro-content {
-            opacity: 0;
-        }
-
-        #intro-content img {
+        #intro-overlay img {
             width: 150px; 
             margin-bottom: 20px;
-            opacity: 0.8;
         }
 
-        #intro-content h2 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        #status-text {
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             color: #fff;
+            margin-bottom: 10px;
+            padding: 0 20px;
             text-shadow: 0 0 10px rgba(255,182,193,0.8);
         }
 
-        #intro-content p {
+        #sub-status {
             font-size: 0.8rem;
             color: rgba(255,255,255,0.5);
-            margin-top: 10px;
             letter-spacing: 1px;
         }
+
+        /* Animasi Wave Suara */
+        .wave-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            height: 30px;
+            margin-top: 20px;
+        }
+        .bar { width: 4px; height: 10px; background: #ffb6c1; border-radius: 10px; animation: wave 0.5s infinite alternate; }
+        @keyframes wave { from { height: 10px; } to { height: 30px; } }
 
         .stars-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -91,25 +75,21 @@
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
         }
 
-        /* JUDUL GLOWING (TETAP SAMA) */
         header { margin-top: 20px; margin-bottom: 20px; z-index: 5; text-align: center; }
         header h1 { 
             font-size: 2.8rem; 
-            letter-spacing: -1px; 
             font-weight: 600;
             color: #fff;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-                         0 0 20px rgba(255, 182, 193, 0.6), 
-                         0 0 30px rgba(255, 182, 193, 0.4);
+                         0 0 20px rgba(255, 182, 193, 0.6);
             animation: glowPulse 2s ease-in-out infinite alternate;
         }
 
         @keyframes glowPulse {
-            from { transform: scale(1); text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6); }
-            to { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8); }
+            from { transform: scale(1); }
+            to { transform: scale(1.03); }
         }
 
-        /* MARQUEE FOTO (TETAP SAMA) */
         .marquee-container {
             width: 100vw; overflow: hidden; display: flex;
             background: rgba(255, 255, 255, 0.02); padding: 50px 0;
@@ -131,12 +111,16 @@
 </head>
 <body>
 
-<div id="intro-overlay">
-    <canvas id="draw-canvas"></canvas>
-    <div id="intro-content">
-        <img src="3.gif" alt="Intro Gif">
-        <h2>GAMBAR LOVE ❤️</h2>
-        <p>Gunakan jarimu di layar untuk membuka web</p>
+<div id="intro-overlay" onclick="mulaiDengar()">
+    <img src="3.gif" alt="Intro Gif">
+    <h2 id="status-text">Absen Dulu Girls! 🎤</h2>
+    <p id="sub-status">Klik layar, lalu sebut nama kalian<br>(Diva, Tasya, Raisya, atau Sifa)</p>
+    
+    <div id="wave-visual" class="wave-container">
+        <div class="bar"></div>
+        <div class="bar" style="animation-delay: 0.1s;"></div>
+        <div class="bar" style="animation-delay: 0.2s;"></div>
+        <div class="bar" style="animation-delay: 0.3s;"></div>
     </div>
 </div>
 
@@ -167,119 +151,76 @@
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // Duplicate marquee content
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
-    // Canvas Drawing Logic
-    const canvas = document.getElementById('draw-canvas');
-    const ctx = canvas.getContext('2d');
     const intro = document.getElementById('intro-overlay');
+    const statusText = document.getElementById('status-text');
+    const wave = document.getElementById('wave-visual');
     const music = document.getElementById('bgMusic');
     
-    let drawing = false;
-    let points = [];
+    let sudahBuka = false;
+    let sedangMendengar = false;
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    function mulaiDengar() {
+        if (sudahBuka || sedangMendengar) return;
 
-    // Line Style
-    ctx.strokeStyle = '#ffb6c1'; // Pink Glow awal
-    ctx.lineWidth = 6;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = '#ffb6c1';
-
-    function startDrawing(e) {
-        if (intro.classList.contains('success')) return; // Jangan gambar kalau sudah sukses
-        drawing = true;
-        points = [];
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        addPoint(e);
-    }
-
-    function draw(e) {
-        if (!drawing || intro.classList.contains('success')) return;
-        addPoint(e);
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
-        if (points.length > 0) {
-            ctx.moveTo(points[0].x, points[0].y);
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
-            }
-        }
-        ctx.stroke();
-    }
-
-    function stopDrawing() {
-        if (!drawing || intro.classList.contains('success')) return;
-        drawing = false;
-        checkHeart();
-    }
-
-    function addPoint(e) {
-        const x = e.touches ? e.touches[0].clientX : e.clientX;
-        const y = e.touches ? e.touches[0].clientY : e.clientY;
-        points.push({x, y});
-    }
-
-    function checkHeart() {
-        if (points.length < 15) return; 
-
-        const xs = points.map(p => p.x);
-        const ys = points.map(p => p.y);
-        const width = Math.max(...xs) - Math.min(...xs);
-        const height = Math.max(...ys) - Math.min(...ys);
-
-        // Syarat Sukses: Gambar cukup lebar dan tinggi
-        if (width > 60 && height > 60) {
-            
-            // ANIMASI SUKSES 1: Ubah garis jadi Putih Terang (Glowing)
-            ctx.strokeStyle = '#fff';
-            ctx.shadowColor = '#fff';
-            ctx.lineWidth = 8;
-            ctx.stroke();
-            
-            // Mulai Transisi Web Utama
+        if (!window.SpeechRecognition) {
             startApp();
-        } else {
-            // Kalau salah, hapus garis pelan-pelan
-            setTimeout(() => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }, 300);
+            return;
         }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'id-ID';
+
+        recognition.onstart = () => {
+            sedangMendengar = true;
+            statusText.innerText = "Lagi dengerin nih...";
+            statusText.style.color = "#fff";
+            wave.style.display = "flex";
+        };
+
+        recognition.onresult = (e) => {
+            const hasil = e.results[0][0].transcript.toLowerCase();
+            
+            // Cek Nama Spesifik
+            if (hasil.includes("diva") || hasil.includes("tasya") || hasil.includes("raisya") || hasil.includes("sifa")) {
+                statusText.innerText = "Akses Diterima! Hello Girls ✨";
+                statusText.style.color = "#ffb6c1";
+                setTimeout(startApp, 1000);
+            } else {
+                // Pesan kalau salah sebut nama
+                statusText.innerText = "Eh, siapa tuh? Sebut nama kalian dong!";
+                statusText.style.color = "#ff4b2b";
+                sedangMendengar = false;
+            }
+        };
+
+        recognition.onerror = () => { sedangMendengar = false; };
+        recognition.onend = () => { 
+            wave.style.display = "none";
+            sedangMendengar = false; 
+        };
+
+        recognition.start();
     }
 
     function startApp() {
-        // ANIMASI SUKSES 2: Tambahkan class 'success' untuk memicu CSS transition
-        intro.classList.add('success');
+        if (sudahBuka) return;
+        sudahBuka = true;
         
-        // Putar musik
         music.play();
+        intro.style.opacity = "0";
+        intro.style.transform = "scale(1.2)";
         
-        // ANIMASI SUKSES 3: Zoom Out & Fade Out Intro pelan-pelan
         setTimeout(() => {
             intro.style.display = "none";
-        }, 1000); // Sinkron dengan durasi transition CSS (1s)
-        
+        }, 800);
+
         document.getElementById('tapText').style.opacity = "0.4";
     }
-
-    // Handlers
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    window.addEventListener('mouseup', stopDrawing);
-
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
-    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
-    canvas.addEventListener('touchend', stopDrawing);
 </script>
 
 </body>
