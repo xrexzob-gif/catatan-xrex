@@ -21,43 +21,68 @@
             align-items: center;
         }
 
-        /* INTRO OVERLAY */
+        /* INTRO CANVAS DRAWING DENGAN ANIMASI SUKSES */
         #intro-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out, background 0.5s ease;
+            touch-action: none; /* Mencegah scroll saat menggambar */
         }
 
-        #intro-overlay img {
-            width: 200px; /* Ukuran GIF */
+        /* Animasi Zoom Out & Fade Out saat sukses */
+        #intro-overlay.success {
+            transform: scale(1.5); /* Efek membesar pelan-pelan */
+            opacity: 0;
+            background: rgba(255, 182, 193, 0.2); /* Latar belakang merona pink */
+            pointer-events: none; /* Klik tembus ke web utama */
+        }
+
+        #draw-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: crosshair;
+        }
+
+        #intro-content {
+            position: relative;
+            z-index: 10000;
+            pointer-events: none; /* Klik tembus ke canvas di bawahnya */
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Hilangkan konten tulisan saat sukses */
+        #intro-overlay.success #intro-content {
+            opacity: 0;
+        }
+
+        #intro-content img {
+            width: 150px; 
             margin-bottom: 20px;
+            opacity: 0.8;
         }
 
-        #intro-overlay button {
-            padding: 10px 25px;
+        #intro-content h2 {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
             letter-spacing: 2px;
-            background: transparent;
             color: #fff;
-            border: 2px solid #fff;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: 0.3s;
+            text-shadow: 0 0 10px rgba(255,182,193,0.8);
         }
 
-        #intro-overlay button:hover {
-            background: #fff;
-            color: #000;
+        #intro-content p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 10px;
+            letter-spacing: 1px;
         }
 
         .stars-bg { 
@@ -66,7 +91,7 @@
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
         }
 
-        /* JUDUL GLOWING */
+        /* JUDUL GLOWING (TETAP SAMA) */
         header { margin-top: 20px; margin-bottom: 20px; z-index: 5; text-align: center; }
         header h1 { 
             font-size: 2.8rem; 
@@ -84,7 +109,7 @@
             to { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 182, 193, 0.8); }
         }
 
-        /* MARQUEE FOTO */
+        /* MARQUEE FOTO (TETAP SAMA) */
         .marquee-container {
             width: 100vw; overflow: hidden; display: flex;
             background: rgba(255, 255, 255, 0.02); padding: 50px 0;
@@ -107,8 +132,12 @@
 <body>
 
 <div id="intro-overlay">
-    <img src="3.gif" alt="Intro Gif">
-    <button onclick="startApp()">CLICK TO OPEN</button>
+    <canvas id="draw-canvas"></canvas>
+    <div id="intro-content">
+        <img src="3.gif" alt="Intro Gif">
+        <h2>GAMBAR LOVE ❤️</h2>
+        <p>Gunakan jarimu di layar untuk membuka web</p>
+    </div>
 </div>
 
 <div class="stars-bg"></div>
@@ -138,24 +167,119 @@
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
+    // Duplicate marquee content
     const track = document.getElementById('track');
     track.innerHTML += track.innerHTML;
 
+    // Canvas Drawing Logic
+    const canvas = document.getElementById('draw-canvas');
+    const ctx = canvas.getContext('2d');
+    const intro = document.getElementById('intro-overlay');
+    const music = document.getElementById('bgMusic');
+    
+    let drawing = false;
+    let points = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Line Style
+    ctx.strokeStyle = '#ffb6c1'; // Pink Glow awal
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#ffb6c1';
+
+    function startDrawing(e) {
+        if (intro.classList.contains('success')) return; // Jangan gambar kalau sudah sukses
+        drawing = true;
+        points = [];
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        addPoint(e);
+    }
+
+    function draw(e) {
+        if (!drawing || intro.classList.contains('success')) return;
+        addPoint(e);
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        if (points.length > 0) {
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+        }
+        ctx.stroke();
+    }
+
+    function stopDrawing() {
+        if (!drawing || intro.classList.contains('success')) return;
+        drawing = false;
+        checkHeart();
+    }
+
+    function addPoint(e) {
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+        points.push({x, y});
+    }
+
+    function checkHeart() {
+        if (points.length < 15) return; 
+
+        const xs = points.map(p => p.x);
+        const ys = points.map(p => p.y);
+        const width = Math.max(...xs) - Math.min(...xs);
+        const height = Math.max(...ys) - Math.min(...ys);
+
+        // Syarat Sukses: Gambar cukup lebar dan tinggi
+        if (width > 60 && height > 60) {
+            
+            // ANIMASI SUKSES 1: Ubah garis jadi Putih Terang (Glowing)
+            ctx.strokeStyle = '#fff';
+            ctx.shadowColor = '#fff';
+            ctx.lineWidth = 8;
+            ctx.stroke();
+            
+            // Mulai Transisi Web Utama
+            startApp();
+        } else {
+            // Kalau salah, hapus garis pelan-pelan
+            setTimeout(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 300);
+        }
+    }
+
     function startApp() {
+        // ANIMASI SUKSES 2: Tambahkan class 'success' untuk memicu CSS transition
+        intro.classList.add('success');
+        
         // Putar musik
-        const music = document.getElementById('bgMusic');
         music.play();
         
-        // Sembunyikan intro
-        const intro = document.getElementById('intro-overlay');
-        intro.style.opacity = "0";
+        // ANIMASI SUKSES 3: Zoom Out & Fade Out Intro pelan-pelan
         setTimeout(() => {
             intro.style.display = "none";
-        }, 800);
-
-        // Update teks bawah
+        }, 1000); // Sinkron dengan durasi transition CSS (1s)
+        
         document.getElementById('tapText').style.opacity = "0.4";
     }
+
+    // Handlers
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+    canvas.addEventListener('touchend', stopDrawing);
 </script>
 
 </body>
