@@ -107,6 +107,26 @@
         @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
+
+        /* GAYA TOMBOL AMPLOP CHAT */
+        #chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffb6c1;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        #chat-button:hover { transform: scale(1.1); }
+        #chat-button img { width: 30px; height: 30px; }
     </style>
 </head>
 <body>
@@ -148,6 +168,10 @@
 
 <p id="tapText">MUSIC IS PLAYING 🔊</p>
 
+<div id="chat-button" onclick="Tawk_API.toggle()">
+    <img src="https://cdn-icons-png.flaticon.com/512/646/646094.png" alt="Chat">
+</div>
+
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
@@ -184,9 +208,7 @@
 
         recognition.onresult = (e) => {
             const hasil = e.results[0][0].transcript.toLowerCase();
-            console.log("Suara terdeteksi: " + hasil);
             
-            // Cek Nama (Variasi ejaan raisa ditambahkan)
             if (hasil.includes("diva") || hasil.includes("tasya") || hasil.includes("raisa") || hasil.includes("raisya") || hasil.includes("sifa") || hasil.includes("syifa")) {
                 statusText.innerText = "Akses Diterima! Hello Girls ✨";
                 statusText.style.color = "#ffb6c1";
@@ -210,17 +232,28 @@
     function startApp() {
         if (sudahBuka) return;
         sudahBuka = true;
-        
         music.play();
         intro.style.opacity = "0";
         intro.style.transform = "scale(1.2)";
-        
-        setTimeout(() => {
-            intro.style.display = "none";
-        }, 800);
-
+        setTimeout(() => { intro.style.display = "none"; }, 800);
         document.getElementById('tapText').style.opacity = "0.4";
     }
+</script>
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+Tawk_API.onLoad = function(){
+    Tawk_API.hideWidget(); // Sembunyiin widget bawaan yang ganggu tampilan
+};
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+// Link di bawah ini diambil dari screenshot dashboard kamu
+s1.src='https://embed.tawk.to/662a2656a0d6737bd448206d/1hsal7f3g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
 </script>
 
 </body>
