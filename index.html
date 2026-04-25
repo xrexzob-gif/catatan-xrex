@@ -37,18 +37,58 @@
             cursor: pointer;
         }
 
-        #intro-overlay img { width: 150px; margin-bottom: 20px; }
-        #status-text { font-weight: 800; color: #fff; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,182,193,0.8); }
-        #sub-status { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+        #intro-overlay img {
+            width: 150px; 
+            margin-bottom: 20px;
+        }
 
-        .wave-container { display: none; justify-content: center; align-items: center; gap: 5px; height: 30px; margin-top: 20px; }
+        #status-text {
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 10px;
+            padding: 0 20px;
+            text-shadow: 0 0 10px rgba(255,182,193,0.8);
+        }
+
+        #sub-status {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1px;
+        }
+
+        /* Animasi Wave Suara */
+        .wave-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            height: 30px;
+            margin-top: 20px;
+        }
         .bar { width: 4px; height: 10px; background: #ffb6c1; border-radius: 10px; animation: wave 0.5s infinite alternate; }
         @keyframes wave { from { height: 10px; } to { height: 30px; } }
 
-        .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
+        .stars-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; 
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); 
+        }
 
         header { margin-top: 20px; margin-bottom: 20px; z-index: 5; text-align: center; }
-        header h1 { font-size: 2.8rem; font-weight: 600; color: #fff; text-shadow: 0 0 10px rgba(255, 182, 193, 0.6); }
+        header h1 { 
+            font-size: 2.8rem; 
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 182, 193, 0.6);
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.03); }
+        }
 
         .marquee-container {
             width: 100vw; overflow: hidden; display: flex;
@@ -56,47 +96,39 @@
             border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .marquee-content { display: flex; gap: 40px; animation: scroll-loop 35s linear infinite; width: max-content; }
-        .ad-frame { width: 300px; flex-shrink: 0; background: #fff; padding: 15px 15px 45px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); transform: rotate(-1.5deg); }
+        
+        .ad-frame { 
+            width: 300px; flex-shrink: 0; background: #fff; padding: 15px 15px 45px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7); transform: rotate(-1.5deg); 
+        }
         .ad-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 15px; }
         .wish-text { font-family: 'Reenie Beanie', cursive; color: #111; font-size: 1.8rem; text-align: center; }
+
         @keyframes scroll-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         #tapText { position: fixed; bottom: 30px; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
-
-        /* GAYA TOMBOL AMPLOP - VERSI ANTI GAGAL */
-        #chat-button {
-            position: fixed !important;
-            bottom: 30px !important;
-            right: 30px !important;
-            background: #ffb6c1 !important;
-            width: 65px !important;
-            height: 65px !important;
-            border-radius: 50% !important;
-            display: none; /* Muncul setelah absen */
-            justify-content: center !important;
-            align-items: center !important;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5) !important;
-            cursor: pointer !important;
-            z-index: 999999 !important; /* Angka tertinggi supaya paling depan */
-            border: 2px solid #fff !important;
-        }
-        #chat-button img { width: 35px !important; height: 35px !important; pointer-events: none !important; }
     </style>
 </head>
 <body>
 
 <div id="intro-overlay" onclick="mulaiDengar()">
-    <img src="3.gif" alt="Intro">
+    <img src="3.gif" alt="Intro Gif">
     <h2 id="status-text">Absen Dulu Girls! 🎤</h2>
-    <p id="sub-status">Klik layar, lalu sebut nama kalian</p>
+    <p id="sub-status">Klik layar, lalu sebut nama kalian<br>🎙</p>
+    
     <div id="wave-visual" class="wave-container">
-        <div class="bar"></div><div class="bar" style="animation-delay: 0.1s;"></div>
-        <div class="bar" style="animation-delay: 0.2s;"></div><div class="bar" style="animation-delay: 0.3s;"></div>
+        <div class="bar"></div>
+        <div class="bar" style="animation-delay: 0.1s;"></div>
+        <div class="bar" style="animation-delay: 0.2s;"></div>
+        <div class="bar" style="animation-delay: 0.3s;"></div>
     </div>
 </div>
 
 <div class="stars-bg"></div>
-<header><h1>four girls💅💞</h1></header>
+
+<header>
+    <h1>four girls💅💞</h1>
+</header>
 
 <div class="marquee-container">
     <div class="marquee-content" id="track">
@@ -116,10 +148,6 @@
 
 <p id="tapText">MUSIC IS PLAYING 🔊</p>
 
-<div id="chat-button" onclick="bukaChat()">
-    <img src="https://cdn-icons-png.flaticon.com/512/646/646094.png" alt="Chat">
-</div>
-
 <audio id="bgMusic" loop><source src="hindia.mp3" type="audio/mpeg"></audio>
 
 <script>
@@ -128,63 +156,71 @@
 
     const intro = document.getElementById('intro-overlay');
     const statusText = document.getElementById('status-text');
+    const wave = document.getElementById('wave-visual');
     const music = document.getElementById('bgMusic');
     
     let sudahBuka = false;
-
-    function bukaChat() {
-        if (typeof Tawk_API !== 'undefined') {
-            Tawk_API.maximize(); // Memaksa kotak chat terbuka
-            Tawk_API.showWidget();
-        } else {
-            alert("Sistem chat lagi loading, tunggu 2 detik ya!");
-        }
-    }
+    let sedangMendengar = false;
 
     function mulaiDengar() {
-        if (sudahBuka) return;
-        // Simulasi sukses absen untuk testing atau pakai speech asli kamu
+        if (sudahBuka || sedangMendengar) return;
+
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!window.SpeechRecognition) { startApp(); return; }
         
+        if (!window.SpeechRecognition) {
+            startApp();
+            return;
+        }
+
         const recognition = new SpeechRecognition();
         recognition.lang = 'id-ID';
-        recognition.onstart = () => { statusText.innerText = "Lagi dengerin..."; document.getElementById('wave-visual').style.display = "flex"; };
+
+        recognition.onstart = () => {
+            sedangMendengar = true;
+            statusText.innerText = "Lagi dengerin nih...";
+            statusText.style.color = "#fff";
+            wave.style.display = "flex";
+        };
+
         recognition.onresult = (e) => {
             const hasil = e.results[0][0].transcript.toLowerCase();
+            console.log("Suara terdeteksi: " + hasil);
+            
+            // Cek Nama (Variasi ejaan raisa ditambahkan)
             if (hasil.includes("diva") || hasil.includes("tasya") || hasil.includes("raisa") || hasil.includes("raisya") || hasil.includes("sifa") || hasil.includes("syifa")) {
-                startApp();
+                statusText.innerText = "Akses Diterima! Hello Girls ✨";
+                statusText.style.color = "#ffb6c1";
+                setTimeout(startApp, 1000);
             } else {
-                statusText.innerText = "Sebut nama yang bener dong!";
+                statusText.innerText = "Eh, suara siapa tuh? Sebut nama kalian dong!";
+                statusText.style.color = "#ff4b2b";
+                sedangMendengar = false;
             }
         };
+
+        recognition.onerror = () => { sedangMendengar = false; };
+        recognition.onend = () => { 
+            wave.style.display = "none";
+            sedangMendengar = false; 
+        };
+
         recognition.start();
     }
 
     function startApp() {
+        if (sudahBuka) return;
         sudahBuka = true;
+        
         music.play();
         intro.style.opacity = "0";
-        setTimeout(() => { 
-            intro.style.display = "none"; 
-            document.getElementById('chat-button').style.display = 'flex'; // Munculkan tombol
+        intro.style.transform = "scale(1.2)";
+        
+        setTimeout(() => {
+            intro.style.display = "none";
         }, 800);
-    }
-</script>
 
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-Tawk_API.onLoad = function(){
-    Tawk_API.hideWidget();
-};
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/662a2656a0d6737bd448206d/1hsal7f3g';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
+        document.getElementById('tapText').style.opacity = "0.4";
+    }
 </script>
 
 </body>
